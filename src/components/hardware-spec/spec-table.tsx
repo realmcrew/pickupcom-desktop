@@ -1,4 +1,5 @@
 import { TableHead, TableRow, TableHeader, TableCell, TableBody, Table } from '@/components/ui/table';
+import { IHardware } from '@/types/api/dto/common';
 import { IComputer } from '@/types/api/dto/computer';
 
 type Props = { computer: IComputer };
