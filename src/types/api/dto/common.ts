@@ -1,8 +1,2 @@
-type HardwareType = 'CPU' | 'GPU' | 'RAM' | 'MB' | 'DISK' | 'OTHER';
-
-export type IHardware = {
-  hwKey: string;
-  vendorName: string;
-  displayName: string;
-  type: HardwareType;
-};
+import type { HardwareType, IHardware } from '@kgesh/pickupcom/lib/shared/sdk/dto/common';
+export type { HardwareType, IHardware };

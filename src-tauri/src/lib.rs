@@ -5,6 +5,7 @@ pub mod system;
 
 pub fn run() {
     tauri::Builder::default()
+        .plugin(tauri_plugin_shell::init())
         .setup(|app| {
             #[cfg(debug_assertions)] // only include this code on debug builds
             {

@@ -1,6 +1,2 @@
-import { IHardware } from './common';
-
-export type IDisk = IHardware & {
-  kind: string;
-  totalSpace: number;
-};
+import type { IDisk } from '@kgesh/pickupcom/lib/shared/sdk/dto/disk';
+export type { IDisk };

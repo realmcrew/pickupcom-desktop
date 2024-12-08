@@ -1,5 +1,2 @@
-import { IHardware } from './common';
-
-export type IMotherboard = IHardware & {
-  chipset: string;
-};
+import type { IMotherboard } from '@kgesh/pickupcom/lib/shared/sdk/dto/mb';
+export type { IMotherboard };

@@ -1,5 +1,5 @@
 export type IWindowsDisk = {
-  Caption: string | null;
+  Caption: string;
   Model: string | null;
   Size: number;
   Manufacturer: string;

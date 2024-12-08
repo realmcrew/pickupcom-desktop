@@ -1,13 +1,17 @@
 import { IComputer } from '@/types/api/dto/computer';
-import { invokeSystemCommand } from '../tauri/invoke';
+import { invokeSystemCommand } from '@/services/tauri/invoke';
 import { ISystemInfo } from '@/types/system/dto/system';
-import { transformGpus } from './format/gpu-format';
-import { transformRams } from './format/ram-format';
-import { transformDisks } from './format/disk-format';
-import { transformCpus } from './format/cpu-format';
-import { transformMotherboards } from './format/mb-format';
+import { transformGpus } from '@/services/system/format/gpu-format';
+import { transformRams } from '@/services/system/format/ram-format';
+import { transformDisks } from '@/services/system/format/disk-format';
+import { transformCpus } from '@/services/system/format/cpu-format';
+import { transformMotherboards } from '@/services/system/format/mb-format';
 import { WINDOWS_PLATFORM_TYPE } from '@/types/system/dto/windows/platform';
 
+/**
+ * 현재 컴퓨터의 정보를 가져옵니다.
+ * Rust 코드에서 컴퓨터 정보를 가져오는 함수를 호출합니다.
+ */
 export async function getSystemInfo(): Promise<IComputer> {
   const response = await invokeSystemCommand<ISystemInfo>('get_system_info').catch((e) => {
     console.error(e);

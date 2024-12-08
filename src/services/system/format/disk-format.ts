@@ -2,9 +2,55 @@ import { DISK_VENDOR_NAME_TABLE } from '@/constants/disk';
 import { IDisk } from '@/types/api/dto/disk';
 import { ISystemInfo } from '@/types/system/dto/system';
 import { IWindowsDisk } from '@/types/system/dto/windows/disk';
-import { formatDecimalDiskSize } from './byte';
+import { formatDecimalDiskSize } from '@/services/system/format/byte';
+import { IMacDisk } from '@/types/system/dto/mac/disk';
+import { DiskCapacityUnit } from '@kgesh/pickupcom/lib/shared/sdk/dto/disk';
 
-export function formatDiskVendor(disk: IWindowsDisk) {
+export function transformDisks(dto: ISystemInfo): IDisk[] {
+  if (dto.os_type === 'Windows') {
+    return dto.system.disks.map((disk) => {
+      const diskKind = disk.DiskKind.toUpperCase();
+      return {
+        type: 'DISK',
+        hwKey: buildWindowsDiskHwKey(disk),
+        kind: diskKind,
+        displayName: `${disk.Caption} / ${formatDecimalDiskSize(disk.Size)} / ${diskKind}`, // Todo: Size labeling check
+        vendorName: formatDiskVendor(disk),
+        rawData: disk,
+        ...formatWindowsDiskCapacity(disk),
+      };
+    });
+  }
+
+  if (dto.os_type === 'Darwin') {
+    return dto.system.disks.map((disk) => {
+      const diskKind = disk.kind.toUpperCase();
+      return {
+        type: 'DISK',
+        hwKey: buildMacDiskHwKey(disk),
+        kind: diskKind,
+        displayName: `${disk.name} / ${diskKind} / ${formatDecimalDiskSize(disk.total_space)}`, // Todo: Size labeling check
+        vendorName: dto.system.cpu.vendor_id, // Apple
+        rawData: disk,
+        ...formatMacDiskCapacity(disk),
+      };
+    });
+  }
+
+  // Unknown OS
+  return [];
+}
+
+function buildWindowsDiskHwKey(disk: IWindowsDisk): string {
+  return `${disk.Caption} / ${formatDecimalDiskSize(disk.Size)}`;
+}
+
+function buildMacDiskHwKey(disk: IMacDisk): string {
+  const diskKind = disk.kind.toUpperCase();
+  return `${disk.name} / ${diskKind} / ${formatDecimalDiskSize(disk.total_space)}`;
+}
+
+function formatDiskVendor(disk: IWindowsDisk) {
   const vendor =
     DISK_VENDOR_NAME_TABLE.find(
       (vendor) =>
@@ -15,30 +61,22 @@ export function formatDiskVendor(disk: IWindowsDisk) {
   return vendor;
 }
 
-export function transformDisks(dto: ISystemInfo): IDisk[] {
-  console.log('transformDisks', dto);
-  if (dto.os_type === 'Windows') {
-    return dto.system.disks.map((disk) => ({
-      type: 'DISK',
-      hwKey: `${disk.Caption} / ${formatDecimalDiskSize(disk.Size)}`,
-      kind: disk.DiskKind.toLowerCase(),
-      totalSpace: disk.Size,
-      displayName: `${disk.Caption} / ${formatDecimalDiskSize(disk.Size)} / ${disk.DiskKind}`, // Todo: Size labeling check
-      vendorName: formatDiskVendor(disk),
-    }));
-  }
+function formatWindowsDiskCapacity(disk: IWindowsDisk): Pick<IDisk, 'capacity' | 'capacityUnit'> {
+  const formatted = formatDecimalDiskSize(disk.Size, { space: true });
+  const [capacity, unit] = formatted.split(' ');
 
-  if (dto.os_type === 'Darwin') {
-    return dto.system.disks.map((disk) => ({
-      type: 'DISK',
-      hwKey: `${disk.name} / ${disk.kind} / ${formatDecimalDiskSize(disk.available_space)}`,
-      kind: disk.kind.toLowerCase(),
-      totalSpace: disk.total_space,
-      displayName: `${disk.name} / ${disk.kind.toLowerCase()} / ${formatDecimalDiskSize(disk.total_space)}`, // Todo: Size labeling check
-      vendorName: dto.system.cpu.vendor_id, // Apple
-    }));
-  }
+  return {
+    capacity: parseInt(capacity),
+    capacityUnit: unit as DiskCapacityUnit,
+  };
+}
 
-  // Unknown OS
-  return [];
+function formatMacDiskCapacity(disk: IMacDisk): Pick<IDisk, 'capacity' | 'capacityUnit'> {
+  const formatted = formatDecimalDiskSize(disk.total_space, { space: true });
+  const [capacity, unit] = formatted.split(' ');
+
+  return {
+    capacity: parseInt(capacity),
+    capacityUnit: unit as DiskCapacityUnit,
+  };
 }

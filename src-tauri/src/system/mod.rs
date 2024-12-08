@@ -7,15 +7,15 @@ mod windows;
 
 #[cfg(target_os = "windows")]
 pub fn get_system_info() -> SystemInfo {
-  let system = windows::get_windows_system_info().unwrap_or_else(|err| {
-    eprintln!("Error: {}", err);
-    panic!("Error: {}", err);
-  });
-  
-  SystemInfo {
-    os_type: get_os_type(),
-    system,
-  }
+    let system = windows::get_windows_system_info().unwrap_or_else(|err| {
+        eprintln!("Error: {}", err);
+        panic!("Error: {}", err);
+    });
+
+    SystemInfo {
+        os_type: get_os_type(),
+        system,
+    }
 }
 
 #[cfg(target_os = "macos")]

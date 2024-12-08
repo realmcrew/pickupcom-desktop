@@ -18,7 +18,7 @@ impl fmt::Display for OsType {
         match self {
             OsType::Mac => write!(f, "Darwin"),
             OsType::Windows => write!(f, "Windows"),
-        } 
+        }
     }
 }
 

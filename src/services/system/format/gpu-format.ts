@@ -1,6 +1,41 @@
 import { GPU_VENDOR_NAME_TABLE } from '@/constants/gpu';
 import { IGpu } from '@/types/api/dto/gpu';
 import { ISystemInfo } from '@/types/system/dto/system';
+import { IWindowsGpu } from '@/types/system/dto/windows/gpu';
+import { IMacGpu } from '@/types/system/dto/mac/gpu';
+
+export function transformGpus(dto: ISystemInfo): IGpu[] {
+  if (dto.os_type === 'Darwin') {
+    return [
+      {
+        type: 'GPU',
+        hwKey: buildMacGpuHwKey(dto.system.gpu),
+        displayName: buildMacGpuHwKey(dto.system.gpu),
+        vendorName: dto.system.gpu.vendor_id,
+        chipset: `${dto.system.gpu.brand} / ${dto.system.gpu.core_count} Core`,
+        subVendorName: null,
+        isBuiltIn: true,
+        rawData: dto.system.gpu,
+      },
+    ];
+  }
+
+  if (dto.os_type === 'Windows') {
+    return dto.system.gpu.map((gpu) => ({
+      type: 'GPU',
+      hwKey: buildWindowsGpuHwKey(gpu),
+      displayName: buildWindowsGpuHwKey(gpu),
+      vendorName: formatGpuVendor(gpu.AdapterCompatibility),
+      chipset: gpu.VideoProcessor,
+      subVendorName: null,
+      isBuiltIn: isBuiltInVga(gpu.AdapterDacType),
+      rawData: gpu,
+    }));
+  }
+
+  // Unknown OS
+  return [];
+}
 
 /**
  * 내장그래픽, 외장그래픽 여부 체크
@@ -26,40 +61,19 @@ function isBuiltInVga(AdapterDacType: string | null): boolean {
   return checkBuiltInVgaType(AdapterDacType) === 'built-in';
 }
 
-export function formatGpuVendor(sourceName: string): string {
-  const vendor =
-    GPU_VENDOR_NAME_TABLE.find((vendor) => sourceName.toLowerCase().includes(vendor.toLowerCase())) ?? sourceName;
-
-  return vendor;
+function buildWindowsGpuHwKey(gpu: IWindowsGpu): string {
+  return gpu.VideoProcessor;
 }
 
-export function transformGpus(dto: ISystemInfo): IGpu[] {
-  if (dto.os_type === 'Darwin') {
-    return [
-      {
-        type: 'GPU',
-        hwKey: `${dto.system.gpu.brand} / ${dto.system.gpu.core_count} Core`,
-        displayName: `${dto.system.gpu.brand} / ${dto.system.gpu.core_count} Core`,
-        vendorName: dto.system.gpu.vendor_id,
-        chipset: `${dto.system.gpu.brand} / ${dto.system.gpu.core_count} Core`,
-        subVendorName: null,
-        isBuiltIn: true,
-      },
-    ];
-  }
+function buildMacGpuHwKey(gpu: IMacGpu): string {
+  return `${gpu.brand} / ${gpu.core_count} Core`;
+}
 
-  if (dto.os_type === 'Windows') {
-    return dto.system.gpu.map((gpu) => ({
-      type: 'GPU',
-      hwKey: gpu.Caption,
-      displayName: `${gpu.Caption} ${gpu.AdapterRAM ?? ''}`, // Todo: Check display name
-      vendorName: formatGpuVendor(gpu.AdapterCompatibility),
-      chipset: gpu.VideoProcessor,
-      subVendorName: null,
-      isBuiltIn: isBuiltInVga(gpu.AdapterDacType),
-    }));
-  }
+function formatGpuVendor(sourceName: string): string {
+  const trimmedSourceName = sourceName.trim();
+  const vendor =
+    GPU_VENDOR_NAME_TABLE.find((vendor) => trimmedSourceName.toLowerCase().includes(vendor.toLowerCase())) ??
+    trimmedSourceName;
 
-  // Unknown OS
-  return [];
+  return vendor;
 }

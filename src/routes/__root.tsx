@@ -1,23 +1,13 @@
-import { createRootRoute, Link, Outlet } from '@tanstack/react-router';
+import Navbar from '@/components/common/navbar';
+import { createRootRoute, Outlet } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/router-devtools';
-
-function Navbar() {
-  return (
-    <div className="p-2 flex gap-2">
-      <Link to="/" className="[&.active]:font-bold">
-        Home
-      </Link>
-    </div>
-  );
-}
 
 export const Route = createRootRoute({
   component: () => (
-    <>
+    <div className="mx-auto container w-full h-full py-4 md:py-6">
       <Navbar />
-      <hr />
       <Outlet />
       <TanStackRouterDevtools />
-    </>
+    </div>
   ),
 });

@@ -1,3 +1,3 @@
-export const ESTIMATE_HOME_PAGE_URL = 'http://localhost:3000';
+import { IS_PRODUCTION } from '@/shared/helpers/is-production';
 
-export const ESTIMATE_API_BASE_URL = 'http://localhost:3030';
+export const ESTIMATE_HOME_PAGE_URL = IS_PRODUCTION ? 'https://app.pickupcom.com' : 'http://localhost:3000';

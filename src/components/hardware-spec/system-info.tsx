@@ -1,38 +1,38 @@
+import { toast } from 'sonner';
 import { useSystemInfo } from '@/hooks/use-systsm-info';
-import { Button } from '@/components/ui/button';
 import { HardwarePanel } from '@/components/hardware-spec/spec-table';
-// import LoadingScreen from '@/components/common/loading-screen';
-import EstimateButton from '@/components/estimate/estimate-button';
+import LoadingScreen from '@/components/common/loading-screen';
+import RetryScreen from '@/components/common/retry-screen';
+import SystemInfoButtonGroup from './system-info-button-group';
+// import DebugPanel from '@/components/hardware-spec/debug-panel';
 
 export default function SystemInfo() {
   const systemQuery = useSystemInfo();
 
-  // if (systemQuery.isFetching) {
-  //   return <LoadingScreen />;
-  // }
+  const handleSystemRefresh = () => {
+    systemQuery.refetch();
+    toast.success('컴퓨터 정보를 갱신합니다.', { position: 'top-center', duration: 1500, richColors: true });
+  };
+
+  if (systemQuery.isFetching) {
+    return <LoadingScreen />;
+  }
 
   if (!systemQuery.data) {
-    return <p>No data</p>;
+    return <RetryScreen handleRetry={handleSystemRefresh} />;
   }
 
   return (
-    <div>
-      <HardwarePanel computer={systemQuery.data} />
-
-      <h3>Your system info</h3>
-      <p className="text-red-500">{`${JSON.stringify(systemQuery.data, null, 4)}`}</p>
-
-      <Button
-        type="button"
-        disabled={systemQuery.isFetching}
-        onClick={() => systemQuery.refetch()}
-        className="px-4 py-2"
-        variant="outline"
-        size="lg"
-      >
-        시스템 정보 새로고침
-      </Button>
-      <EstimateButton computer={systemQuery.data} />
+    <div className="w-full flex justify-center">
+      <div className="space-y-4 max-w-4xl px-4 container mx-auto flex flex-col">
+        <HardwarePanel computer={systemQuery.data} />
+        <SystemInfoButtonGroup
+          computer={systemQuery.data}
+          isSystemFetching={systemQuery.isFetching}
+          handleSystemRefresh={handleSystemRefresh}
+        />
+        {/* <DebugPanel computer={systemQuery.data} /> */}
+      </div>
     </div>
   );
 }

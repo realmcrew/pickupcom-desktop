@@ -1,11 +1,2 @@
-import { IHardware } from './common';
-import { MEMORY_TYPE } from '@/constants/ram';
-
-export type RamPlatform = 'desktop' | 'laptop';
-
-export type RamDDRType = keyof typeof MEMORY_TYPE;
-
-export type IRam = IHardware & {
-  platform: RamPlatform;
-  ddrType: RamDDRType;
-};
+import type { IRam, RamPlatform, RamDDRType } from '@kgesh/pickupcom/lib/shared/sdk/dto/ram';
+export type { IRam, RamPlatform, RamDDRType };

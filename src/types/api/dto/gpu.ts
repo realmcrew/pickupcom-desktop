@@ -1,7 +1,2 @@
-import { IHardware } from './common';
-
-export type IGpu = IHardware & {
-  chipset: string;
-  subVendorName: string | null;
-  isBuiltIn: boolean;
-};
+import type { IGpu } from '@kgesh/pickupcom/lib/shared/sdk/dto/gpu';
+export type { IGpu };

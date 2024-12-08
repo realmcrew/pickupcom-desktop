@@ -4,8 +4,9 @@ import { RAM_VENDOR_NAME_TABLE } from '@/constants/ram';
 import { ISystemInfo } from '@/types/system/dto/system';
 import { IRam, RamDDRType } from '@/types/api/dto/ram';
 import { formatBytes } from '@/services/system/format/byte';
+import { IMacRam } from '@/types/system/dto/mac/ram';
 
-export function formatRamVendor(ram: IWindowsRam): string {
+function formatRamVendor(ram: IWindowsRam): string {
   const vendor =
     RAM_VENDOR_NAME_TABLE.find((vendor) => ram.Manufacturer.toLowerCase().includes(vendor.toLowerCase())) ??
     ram.Manufacturer;
@@ -56,25 +57,35 @@ export function transformRams(dto: ISystemInfo): IRam[] {
   if (dto.os_type === 'Windows') {
     return dto.system.rams.map((ram) => ({
       type: 'RAM',
-      hwKey: `${formatMemoryType(ram)} / ${ram.Speed} / ${formatBytes(ram.Capacity)}`,
-      displayName: `${formatMemoryType(ram)} / ${ram.Speed} / ${formatBytes(ram.Capacity)}`,
+      hwKey: buildWindowsRamHwKey(ram),
+      displayName: buildWindowsRamHwKey(ram),
       vendorName: formatRamVendor(ram),
       ddrType: formatMemoryType(ram),
       platform: 'desktop',
+      rawData: ram,
     }));
   }
 
   if (dto.os_type === 'Darwin') {
     return dto.system.rams.map((ram) => ({
       type: 'RAM',
-      hwKey: formatBytes(ram.total_memory),
-      displayName: formatBytes(ram.total_memory),
+      hwKey: buildMacRamHwKey(ram),
+      displayName: buildMacRamHwKey(ram),
       vendorName: dto.system.cpu.vendor_id,
       ddrType: 'DDR4', // Todo: replace
       platform: 'laptop',
+      rawData: ram,
     }));
   }
 
   // Unknown OS
   return [];
+}
+
+function buildWindowsRamHwKey(ram: IWindowsRam): string {
+  return `${formatMemoryType(ram)} / ${ram.Speed} / ${formatBytes(ram.Capacity)}`;
+}
+
+function buildMacRamHwKey(ram: IMacRam): string {
+  return formatBytes(ram.total_memory);
 }

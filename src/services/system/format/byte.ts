@@ -5,6 +5,12 @@ export function formatBytes(bytes: number): string {
   return bytesFormat(bytes, { unit: 'GB' }) ?? '';
 }
 
-export function formatDecimalDiskSize(bytes: number): string {
-  return prettyBytes(bytes, { maximumFractionDigits: 1, space: false });
+export function formatDecimalDiskSize(
+  bytes: number,
+  options?: { maximumFractionDigits?: number; space?: boolean },
+): string {
+  return prettyBytes(bytes, {
+    maximumFractionDigits: options?.maximumFractionDigits ?? 1,
+    space: options?.space ?? false,
+  });
 }

@@ -1,5 +1,5 @@
 export type IWindowsMotherboard = {
-  Product: string;
+  Product: string; // OS에서 추출한 메인보드 이름 (e.g, X870 AORUS ELITE WIFI7 ICE). DB에 저장되는 HW key 역할
   Caption: string;
   Manufacturer: string;
   PartNumber: string | null;

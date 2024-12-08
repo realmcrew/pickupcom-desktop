@@ -5,6 +5,8 @@ const WINDOWS_OS_TYPE = 'Windows';
 
 const MAC_OS_TYPE = 'Darwin';
 
+export type OsType = typeof WINDOWS_OS_TYPE | typeof MAC_OS_TYPE;
+
 export type IWindowsSystemInfo = {
   os_type: typeof WINDOWS_OS_TYPE;
   system: IWindowsSystem;
