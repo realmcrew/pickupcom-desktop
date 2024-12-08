@@ -26,6 +26,11 @@ jobs:
         with:
           workspaces: './src-tauri -> target'
 
+      - name: Create .npmrc
+        run: |
+          echo "//npm.pkg.github.com/:_authToken=${{secrets.GH_NPM_PUBLISH_TOKEN}}" > .npmrc
+          echo "@${{secrets.NPM_ORG_NAME}}=https://npm.pkg.github.com/" >> .npmrc
+
       - name: Install pnpm
         run: npm install -g pnpm
 
