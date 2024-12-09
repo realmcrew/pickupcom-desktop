@@ -40,8 +40,8 @@ pub fn get_gpu_info(
     }
 
     let gpu_vram_infos = get_gpu_vram_from_powershell()?;
-    for gpu_vram_info in gpu_vram_infos {
-        println!("{}", gpu_vram_info);
+    for (gpu_name, vram) in &gpu_vram_infos {
+        println!("GPU: {}, VRAM: {} MB", gpu_name, vram);
     }
     
     // video_controllers와 gpu_vram_infos를 결합하고 Option 타입을 올바르게 처리
@@ -78,7 +78,7 @@ pub fn get_gpu_vram_from_powershell() -> Result<Vec<(String, u64)>, Box<dyn std:
     if ($result.Count -eq 0) {
         Write-Output "[]"
     } else {
-        $result | ConvertTo-Json
+        Write-Output "[$($result | ConvertTo-Json -Compress)]"
     }
     "#;
 
@@ -100,10 +100,10 @@ pub fn get_gpu_vram_from_powershell() -> Result<Vec<(String, u64)>, Box<dyn std:
     }
 
     // JSON 파싱 시도
-    let gpu_info: Vec<serde_json::Value> = match serde_json::from_str(&stdout) {
+    let gpu_info: Vec<serde_json::Value> = match serde_json::from_str(&stdout.trim()) {
         Ok(info) => info,
         Err(e) => {
-            println!("JSON parsing error: {}", e);
+            println!("JSON parsing error: {}. Raw output: {}", e, stdout);
             return Ok(Vec::new());
         }
     };
