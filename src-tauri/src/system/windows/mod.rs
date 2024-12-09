@@ -13,7 +13,7 @@ mod platform;
 
 use cpu::Win32Processor;
 use disk::{Win32DiskDrive, Win32DiskDriveExpended};
-use gpu::Win32VideoController;
+use gpu::{Win32VideoController, Win32VideoControllerExpended};
 use memory::Win32PhysicalMemory;
 use motherboard::Win32BaseBoard;
 use os::Win32OperatingSystem;

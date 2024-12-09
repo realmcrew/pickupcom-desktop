@@ -4,7 +4,7 @@ import { HardwarePanel } from '@/components/hardware-spec/spec-table';
 import LoadingScreen from '@/components/common/loading-screen';
 import RetryScreen from '@/components/common/retry-screen';
 import SystemInfoButtonGroup from './system-info-button-group';
-// import DebugPanel from '@/components/hardware-spec/debug-panel';
+import DebugPanel from '@/components/hardware-spec/debug-panel';
 
 export default function SystemInfo() {
   const systemQuery = useSystemInfo();
@@ -31,7 +31,7 @@ export default function SystemInfo() {
           isSystemFetching={systemQuery.isFetching}
           handleSystemRefresh={handleSystemRefresh}
         />
-        {/* <DebugPanel computer={systemQuery.data} /> */}
+        <DebugPanel computer={systemQuery.data} />
       </div>
     </div>
   );

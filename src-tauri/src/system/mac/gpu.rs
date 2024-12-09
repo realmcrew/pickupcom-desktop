@@ -10,6 +10,7 @@ pub fn get_gpu_info(system: &System) -> Gpu {
 
     let output_str = String::from_utf8_lossy(&output.stdout);
 
+    // Apple
     let vendor_id = system.cpus()[0].vendor_id().to_string();
     let mut gpu_core_count = 0;
     let mut gpu_model = String::new();

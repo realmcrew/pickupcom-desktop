@@ -10,4 +10,6 @@ export type IWindowsGpu = {
   DriverVersion: string | null;
   AdapterRAM: number | null;
   InstalledDisplayDrivers: string | null;
+  VramCapacity: number;
+  VRamCapacityUnit: string;
 };
