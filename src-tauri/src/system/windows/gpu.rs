@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 use wmi::{WMIConnection, WMIDateTime};
 use std::process::Command;
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(rename = "Win32_VideoController")]
 #[serde(rename_all = "PascalCase")]
 pub struct Win32VideoController {
@@ -43,13 +43,19 @@ pub fn get_gpu_info(
     for gpu_vram_info in gpu_vram_infos {
         println!("{}", gpu_vram_info);
     }
-    // aggregate video_controllers and gpu_vram_infos.
+    
+    // video_controllers와 gpu_vram_infos를 결합하고 Option 타입을 올바르게 처리
     let video_controllers_with_vram = video_controllers.iter().map(|video_controller| {
-        let vram_capacity_mb = gpu_vram_infos.iter().find(|gpu_vram_info| gpu_vram_info.0 == video_controller.name.unwrap_or("Unknown GPU")).map(|gpu_vram_info| gpu_vram_info.1);
+        let vram_capacity_mb = gpu_vram_infos.iter()
+            .find(|gpu_vram_info| {
+                gpu_vram_info.0 == *video_controller.name.as_ref().unwrap_or(&"Unknown GPU".to_string())
+            })
+            .map(|gpu_vram_info| gpu_vram_info.1);
+            
         Win32VideoControllerExpended {
             base: video_controller.clone(),
             vram_capacity: vram_capacity_mb,
-            vram_capacity_unit: "MB".to_string(),
+            vram_capacity_unit: String::from("MB"),
         }
     }).collect::<Vec<Win32VideoControllerExpended>>();
 
@@ -58,18 +64,22 @@ pub fn get_gpu_info(
 
 
 pub fn get_gpu_vram_from_powershell() -> Result<Vec<(String, u64)>, Box<dyn std::error::Error>> {
-    // PowerShell script to fetch GPU VRAM information in MB
-    // "4d36e968-e325-11ce-bfc1-08002be10318" is the class GUID for video controllers. (Same for every PC)
     let ps_script = r#"
-    $adapterMemory = (Get-ItemProperty -Path "HKLM:\SYSTEM\ControlSet001\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0*" -Name "HardwareInformation.AdapterString", "HardwareInformation.qwMemorySize" -Exclude PSPath -ErrorAction SilentlyContinue)
+    $adapters = Get-ItemProperty -Path "HKLM:\SYSTEM\ControlSet001\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0*" -ErrorAction SilentlyContinue
     $result = @()
-    foreach ($adapter in $adapterMemory) {
-        $result += [PSCustomObject] @{
-            Model = $adapter."HardwareInformation.AdapterString"
-            VRAM_MB = [math]::round($adapter."HardwareInformation.qwMemorySize"/1MB)
+    foreach ($adapter in $adapters) {
+        if ($adapter."HardwareInformation.AdapterString" -and $adapter."HardwareInformation.qwMemorySize") {
+            $result += [PSCustomObject] @{
+                Model = $adapter."HardwareInformation.AdapterString"
+                VRAM_MB = [math]::round($adapter."HardwareInformation.qwMemorySize"/1MB)
+            }
         }
     }
-    $result | ConvertTo-Json -Depth 1
+    if ($result.Count -eq 0) {
+        Write-Output "[]"
+    } else {
+        $result | ConvertTo-Json
+    }
     "#;
 
     // Execute PowerShell command
@@ -79,28 +89,32 @@ pub fn get_gpu_vram_from_powershell() -> Result<Vec<(String, u64)>, Box<dyn std:
         .arg(ps_script)
         .output()?;
 
-    if !output.status.success() {
-        return Err(format!(
-            "PowerShell script failed with error: {}",
-            String::from_utf8_lossy(&output.stderr)
-        )
-        .into());
+    let stdout = String::from_utf8(output.stdout)?;
+    
+    // 디버깅을 위한 출력
+    println!("PowerShell Output: {}", stdout);
+
+    // 빈 배열 반환 조건 처리
+    if stdout.trim().is_empty() || stdout.trim() == "[]" {
+        return Ok(Vec::new());
     }
 
-    // Parse PowerShell output
-    let stdout = String::from_utf8(output.stdout)?;
-    let gpu_info: Vec<serde_json::Value> = serde_json::from_str(&stdout)?;
+    // JSON 파싱 시도
+    let gpu_info: Vec<serde_json::Value> = match serde_json::from_str(&stdout) {
+        Ok(info) => info,
+        Err(e) => {
+            println!("JSON parsing error: {}", e);
+            return Ok(Vec::new());
+        }
+    };
 
-    // Convert parsed JSON into a vector of tuples
+    // Convert parsed JSON into a vector of tuples with better error handling
     let gpu_vram_info: Vec<(String, u64)> = gpu_info
         .into_iter()
-        .map(|item| {
-            let model = item["Model"]
-                .as_str()
-                .unwrap_or("Unknown GPU")
-                .to_string();
-            let vram_mb = item["VRAM_MB"].as_u64().unwrap_or(0); // Keep VRAM as u64
-            (model, vram_mb)
+        .filter_map(|item| {
+            let model = item.get("Model")?.as_str()?.to_string();
+            let vram_mb = item.get("VRAM_MB")?.as_u64()?;
+            Some((model, vram_mb))
         })
         .collect();
 
