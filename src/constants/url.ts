@@ -1,3 +1,3 @@
-import { IS_PRODUCTION } from '@/shared/helpers/is-production';
+import { env } from '@/shared/env';
 
-export const ESTIMATE_HOME_PAGE_URL = IS_PRODUCTION ? 'https://app.pickupcom.com' : 'http://localhost:3000';
+export const ESTIMATE_HOME_PAGE_URL = env.VITE_ESTIMATE_HOME_PAGE_URL;
