@@ -50,8 +50,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_ACTIONS_TOKEN }}
         with:
-          tagName: app-v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version.
-          releaseName: 'PickupCom v__VERSION__' # tauri-action replaces \_\_VERSION\_\_ with the app version.
-          releaseBody: 'See the assets to download and install this version.'
+          tagName: __VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version
+          releaseName: '__VERSION__'
+          releaseBody: ${{ github.event.head_commit.message }} # Commit message
           releaseDraft: true
           prerelease: false
