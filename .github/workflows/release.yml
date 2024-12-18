@@ -33,6 +33,7 @@ jobs:
 
       - name: Create Dot env
         run: |
+          touch .env
           echo "VITE_APP_MODE=${{ secrets.VITE_APP_MODE }}" > .env
           echo "VITE_ESTIMATE_HOME_PAGE_URL=${{ secrets.VITE_ESTIMATE_HOME_PAGE_URL }}" >> .env
 
