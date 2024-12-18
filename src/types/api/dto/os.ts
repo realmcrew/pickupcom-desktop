@@ -1,2 +1,2 @@
-import type { IOperatingSystem } from '@kgesh/pickupcom/lib/shared/sdk/dto/os';
-export type { IOperatingSystem };
+import type { OperatingSystem } from '@kgesh/pickupcom/lib/shared/sdk/dto/os';
+export type { OperatingSystem };

@@ -1,34 +1,37 @@
-import { IComputer } from '@/types/api/dto/computer';
+import { Computer } from '@/types/api/dto/computer';
 import { invokeSystemCommand } from '@/services/tauri/invoke';
 import { ISystemInfo } from '@/types/system/dto/system';
 import { transformGpus } from '@/services/system/format/gpu-format';
 import { transformRams } from '@/services/system/format/ram-format';
 import { transformDisks } from '@/services/system/format/disk-format';
 import { transformCpus } from '@/services/system/format/cpu-format';
-import { transformMotherboards } from '@/services/system/format/mb-format';
+import { transformMainboards } from '@/services/system/format/mb-format';
 import { WINDOWS_PLATFORM_TYPE } from '@/types/system/dto/windows/platform';
 
 /**
  * 현재 컴퓨터의 정보를 가져옵니다.
  * Rust 코드에서 컴퓨터 정보를 가져오는 함수를 호출합니다.
  */
-export async function getSystemInfo(): Promise<IComputer> {
+export async function getSystemInfo(): Promise<Computer> {
   const response = await invokeSystemCommand<ISystemInfo>('get_system_info').catch((e) => {
+    // @TODO: Error handling
     console.error(e);
     throw e;
   });
 
+  console.debug('[HW INFO]', response);
+
   return transform(response);
 }
 
-function transform(dto: ISystemInfo): IComputer {
+function transform(dto: ISystemInfo): Computer {
   switch (dto.os_type) {
     case 'Darwin':
       return {
         os: { name: dto.system.os.name, platform: 'laptop' },
         cpus: transformCpus(dto),
         gpus: transformGpus(dto),
-        motherboards: transformMotherboards(dto),
+        mainboards: transformMainboards(dto),
         rams: transformRams(dto),
         disks: transformDisks(dto),
       };
@@ -50,7 +53,7 @@ function transform(dto: ISystemInfo): IComputer {
           platform: isDesktop ? 'desktop' : 'laptop',
         },
         cpus: transformCpus(dto),
-        motherboards: transformMotherboards(dto),
+        mainboards: transformMainboards(dto),
         gpus: transformGpus(dto),
         rams: transformRams(dto),
         disks: transformDisks(dto),
@@ -62,7 +65,7 @@ function transform(dto: ISystemInfo): IComputer {
       return {
         os: { name: 'UNKNOWN', platform: 'desktop' },
         cpus: transformCpus(dto),
-        motherboards: transformMotherboards(dto),
+        mainboards: transformMainboards(dto),
         gpus: transformGpus(dto),
         rams: transformRams(dto),
         disks: transformDisks(dto),

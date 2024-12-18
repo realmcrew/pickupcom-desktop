@@ -1,8 +1,8 @@
-import { MOTHERBOARD_SUB_VENDOR_NAME_TABLE } from '@/constants/mb';
-import { IMotherboard } from '@/types/api/dto/mb';
+import { MAINBOARD_SUB_VENDOR_NAME_TABLE } from '@/constants/mb';
+import { Mainboard } from '@/types/api/dto/mb';
 import { ISystemInfo } from '@/types/system/dto/system';
 
-export function transformMotherboards(dto: ISystemInfo): IMotherboard[] {
+export function transformMainboards(dto: ISystemInfo): Mainboard[] {
   if (dto.os_type === 'Darwin') {
     return [];
   }
@@ -26,7 +26,7 @@ function formatMotherboardVendor(sourceName: string): string {
   if (!sourceName) return 'UNKNOWN';
 
   const vendor =
-    MOTHERBOARD_SUB_VENDOR_NAME_TABLE.find((vendor) => sourceName.toLowerCase().includes(vendor.toLowerCase())) ??
+    MAINBOARD_SUB_VENDOR_NAME_TABLE.find((vendor) => sourceName.toLowerCase().includes(vendor.toLowerCase())) ??
     sourceName;
 
   return vendor;

@@ -1,12 +1,12 @@
 import { DISK_VENDOR_NAME_TABLE } from '@/constants/disk';
-import { IDisk } from '@/types/api/dto/disk';
+import { Disk } from '@/types/api/dto/disk';
 import { ISystemInfo } from '@/types/system/dto/system';
 import { IWindowsDisk } from '@/types/system/dto/windows/disk';
 import { formatDecimalDiskSize } from '@/services/system/format/byte';
 import { IMacDisk } from '@/types/system/dto/mac/disk';
 import { DiskCapacityUnit } from '@kgesh/pickupcom/lib/shared/sdk/dto/disk';
 
-export function transformDisks(dto: ISystemInfo): IDisk[] {
+export function transformDisks(dto: ISystemInfo): Disk[] {
   if (dto.os_type === 'Windows') {
     return dto.system.disks.map((disk) => {
       const diskKind = disk.DiskKind.toUpperCase();
@@ -61,7 +61,7 @@ function formatDiskVendor(disk: IWindowsDisk) {
   return vendor;
 }
 
-function formatWindowsDiskCapacity(disk: IWindowsDisk): Pick<IDisk, 'capacity' | 'capacityUnit'> {
+function formatWindowsDiskCapacity(disk: IWindowsDisk): Pick<Disk, 'capacity' | 'capacityUnit'> {
   const formatted = formatDecimalDiskSize(disk.Size, { space: true });
   const [capacity, unit] = formatted.split(' ');
 
@@ -71,12 +71,12 @@ function formatWindowsDiskCapacity(disk: IWindowsDisk): Pick<IDisk, 'capacity' |
   };
 }
 
-function formatMacDiskCapacity(disk: IMacDisk): Pick<IDisk, 'capacity' | 'capacityUnit'> {
+function formatMacDiskCapacity(disk: IMacDisk): Pick<Disk, 'capacity' | 'capacityUnit'> {
   const formatted = formatDecimalDiskSize(disk.total_space, { space: true });
   const [capacity, unit] = formatted.split(' ');
 
   return {
-    capacity: parseInt(capacity),
-    capacityUnit: unit as DiskCapacityUnit,
+    capacity: parseInt(capacity), // e.g., 2
+    capacityUnit: unit as DiskCapacityUnit, // e.g., TB
   };
 }

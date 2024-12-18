@@ -1,4 +1,4 @@
-export const MOTHERBOARD_SUB_VENDOR_NAME_TABLE = [
+export const MAINBOARD_SUB_VENDOR_NAME_TABLE = [
   'ASUS',
   'ASRock',
   'MSI',

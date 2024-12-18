@@ -2,7 +2,7 @@ import { MEMORY_TYPE } from '@/constants/ram';
 import { IWindowsRam } from '@/types/system/dto/windows/ram';
 import { RAM_VENDOR_NAME_TABLE } from '@/constants/ram';
 import { ISystemInfo } from '@/types/system/dto/system';
-import { IRam, RamDDRType } from '@/types/api/dto/ram';
+import { Ram, RamDDRType } from '@/types/api/dto/ram';
 import { formatBytes } from '@/services/system/format/byte';
 import { IMacRam } from '@/types/system/dto/mac/ram';
 
@@ -31,6 +31,7 @@ export function formatPhysicalMemoryType(ram: IWindowsRam): RamDDRType {
   }
 }
 
+// @TODO: LPDDR case handling
 export function formatMemoryType(ram: IWindowsRam): RamDDRType {
   console.log(`FormatMemoryType: `, ram);
   if (ram.MemoryType === 0 && ram.SmbiosMemoryType === 0) {
@@ -53,7 +54,7 @@ export function formatMemoryType(ram: IWindowsRam): RamDDRType {
   }
 }
 
-export function transformRams(dto: ISystemInfo): IRam[] {
+export function transformRams(dto: ISystemInfo): Ram[] {
   if (dto.os_type === 'Windows') {
     return dto.system.rams.map((ram) => ({
       type: 'RAM',

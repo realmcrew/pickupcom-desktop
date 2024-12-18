@@ -1,11 +1,11 @@
-import { IComputer } from '@/types/api/dto/computer';
+import { Computer } from '@/types/api/dto/computer';
 import EstimateButton from '@/components/estimate/estimate-button';
 import SystemRefreshButton from '@/components/hardware-spec/system-refresh-button';
 import UtilityDropdownMenu from '@/components/hardware-spec/utility-dropdown-menu';
 import { cn } from '@/lib/utils';
 
 type Props = {
-  computer: IComputer;
+  computer: Computer;
   isSystemFetching: boolean;
   handleSystemRefresh: () => void;
   className?: string;

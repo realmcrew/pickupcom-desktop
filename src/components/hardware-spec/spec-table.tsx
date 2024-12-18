@@ -1,12 +1,12 @@
 import { TableHead, TableRow, TableHeader, TableCell, TableBody, Table } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
-import { IHardware } from '@/types/api/dto/common';
-import { IComputer } from '@/types/api/dto/computer';
+import { Hardware } from '@/types/api/dto/common';
+import { Computer } from '@/types/api/dto/computer';
 
-type Props = { className?: string; computer: IComputer };
+type Props = { className?: string; computer: Computer };
 
 export function HardwarePanel({ className, computer }: Props) {
-  const { cpus, motherboards, gpus, rams, disks } = computer;
+  const { cpus, mainboards, gpus, rams, disks } = computer;
   return (
     <section className={cn('flex flex-col gap-4 md:gap-8', className)}>
       <div className="flex items-center">
@@ -25,8 +25,8 @@ export function HardwarePanel({ className, computer }: Props) {
             {/*** CPU ***/}
             {cpus.map((cpu, idx) => createRow(cpu, idx))}
 
-            {/*** Motherboard ***/}
-            {motherboards.map((motherboard, idx) => createRow(motherboard, idx))}
+            {/*** mainboard ***/}
+            {mainboards.map((mainboard, idx) => createRow(mainboard, idx))}
 
             {/*** GPU ***/}
             {gpus.map((gpu, idx) => createRow(gpu, idx))}
@@ -43,7 +43,7 @@ export function HardwarePanel({ className, computer }: Props) {
   );
 }
 
-function createRow(hardware: IHardware, key?: string | number) {
+function createRow(hardware: Hardware, key?: string | number) {
   return (
     <TableRow key={key}>
       <TableCell className="text-center">{hardware.type}</TableCell>

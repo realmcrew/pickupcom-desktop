@@ -55,7 +55,7 @@ pub fn get_gpu_info(
         Win32VideoControllerExpended {
             base: video_controller.clone(),
             vram_capacity: vram_capacity_mb,
-            vram_capacity_unit: String::from("MB"),
+            vram_capacity_unit: Some(String::from("MB")),
         }
     }).collect::<Vec<Win32VideoControllerExpended>>();
 

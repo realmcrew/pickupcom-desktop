@@ -1,10 +1,10 @@
 import { ISystemInfo } from '@/types/system/dto/system';
-import { ICpu } from '@/types/api/dto/cpu';
+import { Cpu } from '@/types/api/dto/cpu';
 import { CPU_VENDOR_NAME_TABLE } from '@/constants/cpu';
 import { IMacCpu } from '@/types/system/dto/mac/cpu';
 import { IWindowsCpu } from '@/types/system/dto/windows/cpu';
 
-export function transformCpus(dto: ISystemInfo): ICpu[] {
+export function transformCpus(dto: ISystemInfo): Cpu[] {
   if (dto.os_type === 'Darwin') {
     return [
       {

@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   '@kgesh/pickupcom':
-    specifier: ^0.1.1
-    version: 0.1.1(@samchon/openapi@2.0.1)(typescript@5.7.2)
+    specifier: ^0.1.9
+    version: 0.1.9(@samchon/openapi@2.0.1)(typescript@5.7.2)
   '@radix-ui/react-dropdown-menu':
     specifier: ^2.1.2
     version: 2.1.2(@types/react-dom@18.3.2)(@types/react@18.3.14)(react-dom@18.3.1)(react@18.3.1)
@@ -796,8 +796,8 @@ packages:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
 
-  /@kgesh/pickupcom@0.1.1(@samchon/openapi@2.0.1)(typescript@5.7.2):
-    resolution: {integrity: sha512-iYImpleKd8Y6shh3m/P/awejBEiHRUz33LSfRdhk+3q+49d12izXwVVkruvw4+PE6+yui7r8HDaOJeVcZXpgAw==, tarball: https://npm.pkg.github.com/download/@kgesh/pickupcom/0.1.1/e95f5d60feca6d5954a8ce0a441e04c3a7cd4337}
+  /@kgesh/pickupcom@0.1.9(@samchon/openapi@2.0.1)(typescript@5.7.2):
+    resolution: {integrity: sha512-QRbcXmLw/U+s3vgzeyEmc2ZoqIQLA2LVjJLoYTwNIRMbHxH96j+vPZv+Yo9oYdLewZf/eiFMKYvZ+0Rxpe/I4Q==, tarball: https://npm.pkg.github.com/download/@kgesh/pickupcom/0.1.9/da666c84a7227bd8edd8a7c40c5359e22408bb1d}
     dependencies:
       '@nestia/fetcher': 4.0.5(typescript@5.7.2)
       typia: 7.0.2(@samchon/openapi@2.0.1)(typescript@5.7.2)

@@ -9,8 +9,10 @@ export function formatDecimalDiskSize(
   bytes: number,
   options?: { maximumFractionDigits?: number; space?: boolean },
 ): string {
-  return prettyBytes(bytes, {
+  const capacity = prettyBytes(bytes, {
     maximumFractionDigits: options?.maximumFractionDigits ?? 1,
     space: options?.space ?? false,
   });
+
+  return capacity;
 }

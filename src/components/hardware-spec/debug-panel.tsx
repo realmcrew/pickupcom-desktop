@@ -1,8 +1,8 @@
 import { IS_PRODUCTION } from '@/shared/helpers/is-production';
-import { IComputer } from '@/types/api/dto/computer';
+import { Computer } from '@/types/api/dto/computer';
 
 type Props = {
-  computer: IComputer;
+  computer: Computer;
 };
 
 export default function DebugPanel({ computer }: Props) {

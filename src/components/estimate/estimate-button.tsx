@@ -1,8 +1,8 @@
-import { IComputer } from '@/types/api/dto/computer';
+import { Computer } from '@/types/api/dto/computer';
 import { Button } from '@/components/ui/button';
 import { useEstimate } from '@/hooks/use-estimate';
 
-type Props = { computer: IComputer };
+type Props = { computer: Computer };
 
 export default function EstimateButton({ computer }: Props) {
   const { mutate, isSuccess, isPending } = useEstimate();

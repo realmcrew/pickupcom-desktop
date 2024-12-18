@@ -1,10 +1,10 @@
 import { GPU_VENDOR_NAME_TABLE } from '@/constants/gpu';
-import { IGpu } from '@/types/api/dto/gpu';
+import { Gpu } from '@/types/api/dto/gpu';
 import { ISystemInfo } from '@/types/system/dto/system';
 import { IWindowsGpu } from '@/types/system/dto/windows/gpu';
 import { IMacGpu } from '@/types/system/dto/mac/gpu';
 
-export function transformGpus(dto: ISystemInfo): IGpu[] {
+export function transformGpus(dto: ISystemInfo): Gpu[] {
   if (dto.os_type === 'Darwin') {
     return [
       {
@@ -15,6 +15,8 @@ export function transformGpus(dto: ISystemInfo): IGpu[] {
         chipset: `${dto.system.gpu.brand} / ${dto.system.gpu.core_count} Core`,
         subVendorName: null,
         isBuiltIn: true,
+        vramCapacity: 0,
+        vramCapacityUnit: 'MB',
         rawData: dto.system.gpu,
       },
     ];
@@ -28,6 +30,8 @@ export function transformGpus(dto: ISystemInfo): IGpu[] {
       vendorName: formatGpuVendor(gpu.AdapterCompatibility),
       chipset: gpu.VideoProcessor,
       subVendorName: null,
+      vramCapacity: gpu.VramCapacity,
+      vramCapacityUnit: gpu.VRamCapacityUnit,
       isBuiltIn: isBuiltInVga(gpu.AdapterDacType),
       rawData: gpu,
     }));
