@@ -8,14 +8,16 @@ export const useEstimate = () => {
   return useMutation({
     mutationFn: async (pcSpec: Computer) => encodePcSpecToBase64(pcSpec),
     onSuccess: async (encoded) => {
+      console.log('[UseEstimate Success]');
       const endpoint = new URL(ESTIMATE_HOME_PAGE_URL);
       endpoint.searchParams.set('spec', encoded);
 
+      console.log('[Endpoing]', endpoint.href);
       // Open the estimate page in the default browser
       return await shell.open(endpoint.href);
     },
     onError: (error) => {
-      console.error(error);
+      console.error(`[UseEstimate Error]`, error);
       throw error;
     },
   });

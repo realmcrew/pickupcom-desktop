@@ -31,6 +31,11 @@ jobs:
           echo "//npm.pkg.github.com/:_authToken=${{secrets.GH_NPM_PUBLISH_TOKEN}}" > .npmrc
           echo "@${{secrets.NPM_ORG_NAME}}=https://npm.pkg.github.com/" >> .npmrc
 
+      - name: Create Dot env
+        run: |
+          echo "VITE_APP_MODE=${{ secrets.VITE_APP_MODE }}" > .env
+          echo "VITE_ESTIMATE_HOME_PAGE_URL=${{ secrets.VITE_ESTIMATE_HOME_PAGE_URL }}" >> .env
+
       - name: Install pnpm
         run: npm install -g pnpm
 

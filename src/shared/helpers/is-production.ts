@@ -1,1 +1,3 @@
-export const IS_PRODUCTION = import.meta.env.PROD;
+import { env } from '../env';
+
+export const IS_PRODUCTION = env.VITE_APP_MODE === 'production';

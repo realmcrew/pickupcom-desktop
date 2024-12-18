@@ -1,6 +1,7 @@
 import { Computer } from '@/types/api/dto/computer';
 
 export function encodePcSpecToBase64(pcSpec: Computer): string {
+  console.log('[ENCODED PC SPEC]', pcSpec);
   const sortedPcSpec: Computer = {
     os: pcSpec.os,
     cpus: pcSpec.cpus.sort((a, b) => a.hwKey.localeCompare(b.hwKey)),
@@ -10,5 +11,7 @@ export function encodePcSpecToBase64(pcSpec: Computer): string {
     mainboards: pcSpec.mainboards.sort((a, b) => a.hwKey.localeCompare(b.hwKey)),
   };
   const serialized = JSON.stringify(sortedPcSpec);
-  return btoa(serialized);
+  const base64 = btoa(serialized);
+  console.log('[BASE64]', base64);
+  return base64;
 }
