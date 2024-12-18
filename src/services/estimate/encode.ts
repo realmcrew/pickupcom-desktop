@@ -1,3 +1,4 @@
+import { Base64 } from 'js-base64';
 import { Computer } from '@/types/api/dto/computer';
 
 export function encodePcSpecToBase64(pcSpec: Computer): string {
@@ -11,7 +12,8 @@ export function encodePcSpecToBase64(pcSpec: Computer): string {
     mainboards: pcSpec.mainboards.sort((a, b) => a.hwKey.localeCompare(b.hwKey)),
   };
   const serialized = JSON.stringify(sortedPcSpec);
-  const base64 = btoa(serialized);
+  console.log('[SERIALIZED]', serialized);
+  const base64 = Base64.encode(serialized);
   console.log('[BASE64]', base64);
   return base64;
 }
