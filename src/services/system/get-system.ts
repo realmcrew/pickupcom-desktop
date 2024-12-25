@@ -20,7 +20,7 @@ export async function getSystemInfo(): Promise<{ pc: Computer; pcId: string }> {
     console.error(e);
     throw e;
   });
-  console.debug('[HW INFO]', response);
+  console.log('[HW INFO]', response);
 
   const pc = transform(response);
   return { pc, pcId };

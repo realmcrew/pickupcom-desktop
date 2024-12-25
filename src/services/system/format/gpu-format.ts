@@ -30,8 +30,8 @@ export function transformGpus(dto: ISystemInfo): Gpu[] {
       vendorName: formatGpuVendor(gpu.AdapterCompatibility),
       chipset: gpu.VideoProcessor,
       subVendorName: null,
-      vramCapacity: gpu.VramCapacity,
-      vramCapacityUnit: gpu.VRamCapacityUnit,
+      vramCapacity: gpu?.VramCapacity ?? 7272,
+      vramCapacityUnit: gpu?.VRamCapacityUnit ?? 'MB',
       isBuiltIn: isBuiltInVga(gpu.AdapterDacType),
       rawData: gpu,
     }));
