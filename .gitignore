@@ -25,4 +25,5 @@ dist-ssr
 # NPM
 .npmrc
 
+# Env
 .env*
