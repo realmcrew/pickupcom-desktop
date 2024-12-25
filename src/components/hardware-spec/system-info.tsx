@@ -22,16 +22,14 @@ export default function SystemInfo() {
     return <RetryScreen handleRetry={handleSystemRefresh} />;
   }
 
+  const pc = systemQuery.data.pc;
+
   return (
     <div className="w-full flex justify-center">
       <div className="space-y-4 max-w-4xl px-4 container mx-auto flex flex-col">
-        <HardwarePanel computer={systemQuery.data} />
-        <SystemInfoButtonGroup
-          computer={systemQuery.data}
-          isSystemFetching={systemQuery.isFetching}
-          handleSystemRefresh={handleSystemRefresh}
-        />
-        <DebugPanel computer={systemQuery.data} />
+        <HardwarePanel pc={pc} />
+        <SystemInfoButtonGroup isSystemFetching={systemQuery.isFetching} handleSystemRefresh={handleSystemRefresh} />
+        <DebugPanel pc={pc} />
       </div>
     </div>
   );

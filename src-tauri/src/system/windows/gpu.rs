@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
-use wmi::{WMIConnection, WMIDateTime};
 use std::process::Command;
+use wmi::{WMIConnection, WMIDateTime};
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(rename = "Win32_VideoController")]
@@ -19,7 +19,6 @@ pub struct Win32VideoController {
     pub video_processor: Option<String>,
     // ... add other fields as needed ...
 }
-
 
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "PascalCase")]
@@ -43,25 +42,32 @@ pub fn get_gpu_info(
     for (gpu_name, vram) in &gpu_vram_infos {
         println!("GPU: {}, VRAM: {} MB", gpu_name, vram);
     }
-    
+
     // video_controllers와 gpu_vram_infos를 결합하고 Option 타입을 올바르게 처리
-    let video_controllers_with_vram = video_controllers.iter().map(|video_controller| {
-        let vram_capacity_mb = gpu_vram_infos.iter()
-            .find(|gpu_vram_info| {
-                gpu_vram_info.0 == *video_controller.name.as_ref().unwrap_or(&"Unknown GPU".to_string())
-            })
-            .map(|gpu_vram_info| gpu_vram_info.1);
-            
-        Win32VideoControllerExpended {
-            base: video_controller.clone(),
-            vram_capacity: vram_capacity_mb,
-            vram_capacity_unit: Some(String::from("MB")),
-        }
-    }).collect::<Vec<Win32VideoControllerExpended>>();
+    let video_controllers_with_vram = video_controllers
+        .iter()
+        .map(|video_controller| {
+            let vram_capacity_mb = gpu_vram_infos
+                .iter()
+                .find(|gpu_vram_info| {
+                    gpu_vram_info.0
+                        == *video_controller
+                            .name
+                            .as_ref()
+                            .unwrap_or(&"Unknown GPU".to_string())
+                })
+                .map(|gpu_vram_info| gpu_vram_info.1);
+
+            Win32VideoControllerExpended {
+                base: video_controller.clone(),
+                vram_capacity: vram_capacity_mb,
+                vram_capacity_unit: Some(String::from("MB")),
+            }
+        })
+        .collect::<Vec<Win32VideoControllerExpended>>();
 
     Ok(video_controllers_with_vram)
 }
-
 
 pub fn get_gpu_vram_from_powershell() -> Result<Vec<(String, u64)>, Box<dyn std::error::Error>> {
     let ps_script = r#"
@@ -90,7 +96,7 @@ pub fn get_gpu_vram_from_powershell() -> Result<Vec<(String, u64)>, Box<dyn std:
         .output()?;
 
     let stdout = String::from_utf8(output.stdout)?;
-    
+
     // 디버깅을 위한 출력
     println!("PowerShell Output: {}", stdout);
 

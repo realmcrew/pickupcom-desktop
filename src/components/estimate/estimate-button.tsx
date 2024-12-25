@@ -1,22 +1,23 @@
-import { Computer } from '@/types/api/dto/computer';
-import { Button } from '@/components/ui/button';
+import { Button, ButtonProps } from '@/components/ui/button';
 import { useEstimate } from '@/hooks/use-estimate';
+import { usePcId } from '@/hooks/use-pc-id';
 
-type Props = { computer: Computer };
+type Props = {
+  // className?: string;
+} & ButtonProps;
 
-export default function EstimateButton({ computer }: Props) {
+export default function EstimateButton(props: Props) {
+  const pcIdQuery = usePcId();
   const { mutate, isSuccess, isPending } = useEstimate();
 
-  const handleSubmit = () => {
-    mutate(computer);
-  };
+  const handleSubmit = (pcId: string) => mutate({ pcId });
 
   if (isSuccess) {
-    // Change UI
+    // Feedback UI
   }
 
   return (
-    <Button disabled={isPending} size="lg" type="button" onClick={handleSubmit}>
+    <Button {...props} disabled={isPending} size="lg" type="button" onClick={() => handleSubmit(pcIdQuery.data)}>
       견적 확인 & 즉시 판매
     </Button>
   );

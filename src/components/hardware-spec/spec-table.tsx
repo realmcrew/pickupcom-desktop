@@ -3,10 +3,10 @@ import { cn } from '@/lib/utils';
 import { Hardware } from '@/types/api/dto/common';
 import { Computer } from '@/types/api/dto/computer';
 
-type Props = { className?: string; computer: Computer };
+type Props = { className?: string; pc: Computer };
 
-export function HardwarePanel({ className, computer }: Props) {
-  const { cpus, mainboards, gpus, rams, disks } = computer;
+export function HardwarePanel({ className, pc }: Props) {
+  const { cpus, mainboards, gpus, rams, disks } = pc;
   return (
     <section className={cn('flex flex-col gap-4 md:gap-8', className)}>
       <div className="flex items-center">

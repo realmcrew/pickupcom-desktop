@@ -7,21 +7,23 @@ import { transformDisks } from '@/services/system/format/disk-format';
 import { transformCpus } from '@/services/system/format/cpu-format';
 import { transformMainboards } from '@/services/system/format/mb-format';
 import { WINDOWS_PLATFORM_TYPE } from '@/types/system/dto/windows/platform';
+import { getPcIdFromStore } from './get-pc-id';
 
 /**
  * 현재 컴퓨터의 정보를 가져옵니다.
  * Rust 코드에서 컴퓨터 정보를 가져오는 함수를 호출합니다.
  */
-export async function getSystemInfo(): Promise<Computer> {
+export async function getSystemInfo(): Promise<{ pc: Computer; pcId: string }> {
+  const pcId = await getPcIdFromStore();
   const response = await invokeSystemCommand<ISystemInfo>('get_system_info').catch((e) => {
     // @TODO: Error handling
     console.error(e);
     throw e;
   });
-
   console.debug('[HW INFO]', response);
 
-  return transform(response);
+  const pc = transform(response);
+  return { pc, pcId };
 }
 
 function transform(dto: ISystemInfo): Computer {
