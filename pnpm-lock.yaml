@@ -5,15 +5,15 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
-  '@kgesh/pickupcom':
-    specifier: ^0.1.17
-    version: 0.1.17(@samchon/openapi@2.0.1)(typescript@5.7.2)
   '@radix-ui/react-dropdown-menu':
     specifier: ^2.1.2
     version: 2.1.2(@types/react-dom@18.3.2)(@types/react@18.3.14)(react-dom@18.3.1)(react@18.3.1)
   '@radix-ui/react-slot':
     specifier: ^1.1.0
     version: 1.1.0(@types/react@18.3.14)(react@18.3.1)
+  '@realmcrew/pickupcom':
+    specifier: ^0.0.1
+    version: 0.0.1(@samchon/openapi@2.3.1)(typescript@5.7.2)
   '@t3-oss/env-core':
     specifier: ^0.11.1
     version: 0.11.1(typescript@5.7.2)(zod@3.24.1)
@@ -817,24 +817,14 @@ packages:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
 
-  /@kgesh/pickupcom@0.1.17(@samchon/openapi@2.0.1)(typescript@5.7.2):
-    resolution: {integrity: sha512-/OGCAoMx4bo+NyawywJgo1Gyged8GtuY8G2f+aSjKc92GCkyPdtbYZtGsfIsxKuPY237Vr5FW50vM/fUpDCS4Q==, tarball: https://npm.pkg.github.com/download/@kgesh/pickupcom/0.1.17/674bf5c45bd32b864872a635c3c13dca756eda9d}
-    dependencies:
-      '@nestia/fetcher': 4.0.5(typescript@5.7.2)
-      typia: 7.0.2(@samchon/openapi@2.0.1)(typescript@5.7.2)
-    transitivePeerDependencies:
-      - '@samchon/openapi'
-      - typescript
-    dev: false
-
-  /@nestia/fetcher@4.0.5(typescript@5.7.2):
-    resolution: {integrity: sha512-ELsjPrUNrUmPJMQDQVLSaYCbGJY/bwnY9xG922O33HVm3keXDaew5JMJqKgEXunytCKAi+gk5itFhd+UIq66nA==}
+  /@nestia/fetcher@4.5.1(typescript@5.7.2):
+    resolution: {integrity: sha512-Si4Ft0gD2SBsqXUycXvqGyWcjrj5C1IDzu6zBmCMRxEo/n343L5kxsI0htRFfzvI/fQK2Oju+Yx1WkF146FiAQ==}
     peerDependencies:
       typescript: '>= 4.8.0'
     dependencies:
-      '@samchon/openapi': 2.0.1
+      '@samchon/openapi': 2.3.1
       typescript: 5.7.2
-      typia: 7.0.2(@samchon/openapi@2.0.1)(typescript@5.7.2)
+      typia: 7.5.1(@samchon/openapi@2.3.1)(typescript@5.7.2)
     dev: false
 
   /@nodelib/fs.scandir@2.1.5:
@@ -1315,6 +1305,16 @@ packages:
     resolution: {integrity: sha512-A9+lCBZoaMJlVKcRBz2YByCG+Cp2t6nAnMnNba+XiWxnj6r4JUFqfsgwocMBZU9LPtdxC6wB56ySYpc7LQIoJg==}
     dev: false
 
+  /@realmcrew/pickupcom@0.0.1(@samchon/openapi@2.3.1)(typescript@5.7.2):
+    resolution: {integrity: sha512-BDUVTgpCOfb+6E3LTDDbWzUstRVNkJYoS1Oh1huAxgx763LJjd2UogsVnIcWUF7HXqbSj2+pMpf0E3R8mHLA3A==, tarball: https://npm.pkg.github.com/download/@realmcrew/pickupcom/0.0.1/ecfb9f748f84ca1e89afeb6998e4b5c990c28c2f}
+    dependencies:
+      '@nestia/fetcher': 4.5.1(typescript@5.7.2)
+      typia: 7.5.1(@samchon/openapi@2.3.1)(typescript@5.7.2)
+    transitivePeerDependencies:
+      - '@samchon/openapi'
+      - typescript
+    dev: false
+
   /@rollup/rollup-android-arm-eabi@4.28.1:
     resolution: {integrity: sha512-2aZp8AES04KI2dy3Ss6/MDjXbwBzj+i0GqKtWXgw2/Ma6E4jJvujryO6gJAghIRVz7Vwr9Gtl/8na3nDUKpraQ==}
     cpu: [arm]
@@ -1467,8 +1467,8 @@ packages:
     dev: true
     optional: true
 
-  /@samchon/openapi@2.0.1:
-    resolution: {integrity: sha512-Vw/iaxqrWVIXlGuwsLPb7hCZUmhBm/ez0aCP3e/8hPWuA9+0sEWAODrvyyrR8elMzK6uXrRRK9a6KibTQ/jHPw==}
+  /@samchon/openapi@2.3.1:
+    resolution: {integrity: sha512-AFfhz/5QzuEMOQgbO0dN2yGOM/12QDFmZC7hCILmiFsDDjXe6KHuOQOvelzEyy0SC4D3a/NuinheVFcPhk9BIw==}
     dev: false
 
   /@t3-oss/env-core@0.11.1(typescript@5.7.2)(zod@3.24.1):
@@ -2614,8 +2614,8 @@ packages:
   /package-json-from-dist@1.0.1:
     resolution: {integrity: sha512-UEZIS3/by4OC8vL3P2dTXRETpebLI2NiI5vIrjaD/5UtrkFX/tNbwjTSRAGC/+7CAo2pIcBaRgWmcBBHcsaCIw==}
 
-  /package-manager-detector@0.2.7:
-    resolution: {integrity: sha512-g4+387DXDKlZzHkP+9FLt8yKj8+/3tOkPv7DVTJGGRm00RkEWgqbFstX1mXJ4M0VDYhUqsTOiISqNOJnhAu3PQ==}
+  /package-manager-detector@0.2.8:
+    resolution: {integrity: sha512-ts9KSdroZisdvKMWVAVCXiKqnqNfXz4+IbrBG8/BWx/TR5le+jfenvoBuIZ6UWM9nz47W7AbD9qYfAwfWMIwzA==}
     dev: false
 
   /path-key@3.1.1:
@@ -3115,18 +3115,18 @@ packages:
     engines: {node: '>=14.17'}
     hasBin: true
 
-  /typia@7.0.2(@samchon/openapi@2.0.1)(typescript@5.7.2):
-    resolution: {integrity: sha512-Wxl/2XK+KIyCmBpR8X8uopKJEtZHsvGF0G5ZgwDGaqzIF9wBdSqDnnuLRpOI/zIch+nDBhbpHdtCztp1RpGg2A==}
+  /typia@7.5.1(@samchon/openapi@2.3.1)(typescript@5.7.2):
+    resolution: {integrity: sha512-WkCZT3O7+h1zXGq+2pDDyfxn4j/NkGICb8+vHJrzUFystD6gMnVDd5IREaMJXhG6qsPGHGA7rPZlIS0VYZ5bJg==}
     hasBin: true
     peerDependencies:
-      '@samchon/openapi': '>=2.0.1 <3.0.0'
+      '@samchon/openapi': '>=2.3.0 <3.0.0'
       typescript: '>=4.8.0 <5.8.0'
     dependencies:
-      '@samchon/openapi': 2.0.1
+      '@samchon/openapi': 2.3.1
       commander: 10.0.1
       comment-json: 4.2.5
       inquirer: 8.2.6
-      package-manager-detector: 0.2.7
+      package-manager-detector: 0.2.8
       randexp: 0.5.3
       typescript: 5.7.2
     dev: false

@@ -1,2 +1,2 @@
-import type { Mainboard } from '@kgesh/pickupcom/lib/shared/sdk/dto/mb';
+import type { Mainboard } from '@realmcrew/pickupcom/lib/shared/sdk/dto/hardware/mb';
 export type { Mainboard };

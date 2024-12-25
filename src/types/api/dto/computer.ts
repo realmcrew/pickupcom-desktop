@@ -1,2 +1,2 @@
-import type { Computer } from '@kgesh/pickupcom/lib/shared/sdk/dto/computer';
+import type { Computer } from '@realmcrew/pickupcom/lib/shared/sdk/dto/hardware/computer';
 export type { Computer };

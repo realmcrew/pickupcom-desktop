@@ -4,7 +4,7 @@ import { ISystemInfo } from '@/types/system/dto/system';
 import { IWindowsDisk } from '@/types/system/dto/windows/disk';
 import { formatDecimalDiskSize } from '@/services/system/format/byte';
 import { IMacDisk } from '@/types/system/dto/mac/disk';
-import { DiskCapacityUnit } from '@kgesh/pickupcom/lib/shared/sdk/dto/disk';
+import { DiskCapacityUnit } from '@realmcrew/pickupcom/lib/shared/sdk/dto/hardware/disk';
 
 export function transformDisks(dto: ISystemInfo): Disk[] {
   if (dto.os_type === 'Windows') {
