@@ -64,6 +64,7 @@ export function transformRams(dto: ISystemInfo): Ram[] {
       ddrType: formatMemoryType(ram),
       platform: 'desktop',
       rawData: ram,
+      ...buildWindowsRamCapacity(ram),
     }));
   }
 
@@ -76,6 +77,7 @@ export function transformRams(dto: ISystemInfo): Ram[] {
       ddrType: 'DDR4', // Todo: replace
       platform: 'laptop',
       rawData: ram,
+      ...buildMacRamCapacity(ram),
     }));
   }
 
@@ -87,6 +89,18 @@ function buildWindowsRamHwKey(ram: IWindowsRam): string {
   return `${formatMemoryType(ram)} / ${ram.Speed} / ${formatBytes(ram.Capacity)}`;
 }
 
+function buildWindowsRamCapacity(ram: IWindowsRam): { capacity: number; capacityUnit: string } {
+  const byteString = formatBytes(ram.Capacity, { unit: 'GB', unitSeparator: ' ' });
+  const [capacity, capacityUnit] = byteString.split(' ');
+  return { capacity: Number(capacity ?? 0), capacityUnit: capacityUnit ?? 'GB' };
+}
+
 function buildMacRamHwKey(ram: IMacRam): string {
   return formatBytes(ram.total_memory);
+}
+
+function buildMacRamCapacity(ram: IMacRam): { capacity: number; capacityUnit: string } {
+  const byteString = formatBytes(ram.total_memory, { unit: 'GB', unitSeparator: ' ' });
+  const [capacity, capacityUnit] = byteString.split(' ');
+  return { capacity: Number(capacity ?? 0), capacityUnit: capacityUnit ?? 'GB' };
 }

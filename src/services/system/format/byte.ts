@@ -1,8 +1,8 @@
 import prettyBytes from 'pretty-bytes';
 import bytesFormat from 'bytes';
 
-export function formatBytes(bytes: number): string {
-  return bytesFormat(bytes, { unit: 'GB' }) ?? '';
+export function formatBytes(bytes: number, options?: { unit?: bytesFormat.Unit; unitSeparator?: string }): string {
+  return bytesFormat(bytes, { unit: options?.unit ?? 'GB', unitSeparator: options?.unitSeparator }) ?? '';
 }
 
 export function formatDecimalDiskSize(

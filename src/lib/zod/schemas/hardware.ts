@@ -51,6 +51,8 @@ export const DiskSchema = HardwareSchema.extend({
 export const RamSchema = HardwareSchema.extend({
   platform: z.union([z.literal('desktop'), z.literal('laptop')]),
   ddrType: z.union([z.literal('DDR1'), z.literal('DDR2'), z.literal('DDR3'), z.literal('DDR4'), z.literal('DDR5')]),
+  capacity: z.number(),
+  capacityUnit: z.string(),
 }) satisfies z.ZodType<Ram>;
 
 export const OsSchema = z.object({
