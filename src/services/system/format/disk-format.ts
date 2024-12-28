@@ -8,7 +8,8 @@ import { DiskCapacityUnit } from '@realmcrew/pickupcom/lib/shared/sdk/dto/hardwa
 
 export function transformDisks(dto: ISystemInfo): Disk[] {
   if (dto.os_type === 'Windows') {
-    return dto.system.disks.map((disk) => {
+    const disks = dto.system.disks.filter((disk) => isSsd(disk.DiskKind) || isHdd(disk.DiskKind));
+    return disks.map((disk) => {
       const diskKind = disk.DiskKind.toUpperCase();
       return {
         type: 'DISK',
@@ -23,7 +24,8 @@ export function transformDisks(dto: ISystemInfo): Disk[] {
   }
 
   if (dto.os_type === 'Darwin') {
-    return dto.system.disks.map((disk) => {
+    const disks = dto.system.disks.filter((disk) => isSsd(disk.kind) || isHdd(disk.kind));
+    return disks.map((disk) => {
       const diskKind = disk.kind.toUpperCase();
       return {
         type: 'DISK',
@@ -79,4 +81,12 @@ function formatMacDiskCapacity(disk: IMacDisk): Pick<Disk, 'capacity' | 'capacit
     capacity: parseInt(capacity), // e.g., 2
     capacityUnit: unit as DiskCapacityUnit, // e.g., TB
   };
+}
+
+function isSsd(kind: string): boolean {
+  return kind.toUpperCase().includes('SSD');
+}
+
+function isHdd(kind: string): boolean {
+  return kind.toUpperCase().includes('HDD');
 }
