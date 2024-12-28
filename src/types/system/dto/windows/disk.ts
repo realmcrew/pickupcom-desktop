@@ -3,7 +3,7 @@ export type IWindowsDisk = {
   Model: string | null;
   Size: number;
   Manufacturer: string;
-  DiskKind: string; // HDD or SSD
+  DiskKind: string | null; // HDD or SSD
   InterfaceType: string;
   SerialNumber: string | null;
   Availability: number | null;

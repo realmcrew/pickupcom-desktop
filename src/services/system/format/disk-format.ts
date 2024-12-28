@@ -5,10 +5,14 @@ import { IWindowsDisk } from '@/types/system/dto/windows/disk';
 import { formatDecimalDiskSize } from '@/services/system/format/byte';
 import { IMacDisk } from '@/types/system/dto/mac/disk';
 import { DiskCapacityUnit } from '@realmcrew/pickupcom/lib/shared/sdk/dto/hardware/disk';
+import { NonNullableField } from '@/types/non-nullable-infer';
 
 export function transformDisks(dto: ISystemInfo): Disk[] {
   if (dto.os_type === 'Windows') {
-    const disks = dto.system.disks.filter((disk) => isSsd(disk.DiskKind) || isHdd(disk.DiskKind));
+    const disks = dto.system.disks.filter((disk) => isSsd(disk.DiskKind) || isHdd(disk.DiskKind)) as NonNullableField<
+      IWindowsDisk,
+      'DiskKind'
+    >[];
     return disks.map((disk) => {
       const diskKind = disk.DiskKind.toUpperCase();
       return {
@@ -83,10 +87,18 @@ function formatMacDiskCapacity(disk: IMacDisk): Pick<Disk, 'capacity' | 'capacit
   };
 }
 
-function isSsd(kind: string): boolean {
+function isSsd(kind: string | null): boolean {
+  if (!kind) {
+    return false;
+  }
+
   return kind.toUpperCase().includes('SSD');
 }
 
-function isHdd(kind: string): boolean {
+function isHdd(kind: string | null): boolean {
+  if (!kind) {
+    return false;
+  }
+
   return kind.toUpperCase().includes('HDD');
 }
