@@ -51,8 +51,8 @@ function checkBuiltInVgaType(AdapterDacType: string | null): 'built-in' | 'exter
     throw new Error('AdapterDacType is null');
   }
 
-  const isBuiltIn = AdapterDacType.toLocaleLowerCase().includes('internal');
-  const isExternal = AdapterDacType.toLocaleLowerCase().includes('integrated');
+  const isBuiltIn = AdapterDacType.toLowerCase().includes('internal');
+  const isExternal = AdapterDacType.toLowerCase().includes('integrated');
 
   if (!isBuiltIn && !isExternal) {
     throw new Error('Unknown GPU type');
