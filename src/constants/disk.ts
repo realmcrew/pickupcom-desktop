@@ -1,6 +1,6 @@
 export const DISK_VENDOR_NAME_TABLE = [
   'SAMSUNG',
-  'WD',
+  'WD', // @TODO: check 'WD' or 'WDC'
   'MICRON',
   'SANDISK',
   'SEAGATE',

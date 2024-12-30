@@ -40,6 +40,7 @@ export const GpuSchema = HardwareSchema.extend({
 
 export const MainboardSchema = HardwareSchema.extend({
   chipset: z.string(),
+  cpuVendor: z.string(),
 }) satisfies z.ZodType<Mainboard>;
 
 export const DiskSchema = HardwareSchema.extend({
@@ -53,6 +54,8 @@ export const RamSchema = HardwareSchema.extend({
   ddrType: z.union([z.literal('DDR1'), z.literal('DDR2'), z.literal('DDR3'), z.literal('DDR4'), z.literal('DDR5')]),
   capacity: z.number(),
   capacityUnit: z.string(),
+  speed: z.number(),
+  speedUnit: z.string(),
 }) satisfies z.ZodType<Ram>;
 
 export const OsSchema = z.object({

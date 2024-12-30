@@ -47,7 +47,7 @@ function buildWindowsCpuHwKey(cpu: IWindowsCpu): string {
   return cpu.Name;
 }
 
-function formatCpuBrand(sourceName: string): string {
+export function formatCpuBrand(sourceName: string): string {
   const vendor =
     CPU_VENDOR_NAME_TABLE.find((vendor) => sourceName.toLowerCase().includes(vendor.toLowerCase())) ?? sourceName;
 

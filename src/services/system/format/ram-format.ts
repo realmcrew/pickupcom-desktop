@@ -6,6 +6,8 @@ import { Ram, RamDDRType } from '@/types/api/dto/ram';
 import { formatBytes } from '@/services/system/format/byte';
 import { IMacRam } from '@/types/system/dto/mac/ram';
 
+const RAM_SPEED_UNIT = 'MHz';
+
 function formatRamVendor(ram: IWindowsRam): string {
   const vendor =
     RAM_VENDOR_NAME_TABLE.find((vendor) => ram.Manufacturer.toLowerCase().includes(vendor.toLowerCase())) ??
@@ -65,6 +67,7 @@ export function transformRams(dto: ISystemInfo): Ram[] {
       platform: 'desktop',
       rawData: ram,
       ...buildWindowsRamCapacity(ram),
+      ...buildWindowsRamSpeed(ram),
     }));
   }
 
@@ -78,6 +81,8 @@ export function transformRams(dto: ISystemInfo): Ram[] {
       platform: 'laptop',
       rawData: ram,
       ...buildMacRamCapacity(ram),
+      speed: 0,
+      speedUnit: RAM_SPEED_UNIT,
     }));
   }
 
@@ -86,13 +91,17 @@ export function transformRams(dto: ISystemInfo): Ram[] {
 }
 
 function buildWindowsRamHwKey(ram: IWindowsRam): string {
-  return `${formatMemoryType(ram)} / ${ram.Speed} / ${formatBytes(ram.Capacity)}`;
+  return `${formatMemoryType(ram)} / ${formatBytes(ram.Capacity)} / ${ram.Speed} / ${formatRamVendor(ram)}`;
 }
 
 function buildWindowsRamCapacity(ram: IWindowsRam): { capacity: number; capacityUnit: string } {
   const byteString = formatBytes(ram.Capacity, { unit: 'GB', unitSeparator: ' ' });
   const [capacity, capacityUnit] = byteString.split(' ');
   return { capacity: Number(capacity ?? 0), capacityUnit: capacityUnit ?? 'GB' };
+}
+
+function buildWindowsRamSpeed(ram: IWindowsRam): { speed: number; speedUnit: string } {
+  return { speed: ram.Speed, speedUnit: RAM_SPEED_UNIT };
 }
 
 function buildMacRamHwKey(ram: IMacRam): string {

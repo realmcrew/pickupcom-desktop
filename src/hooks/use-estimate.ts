@@ -4,9 +4,9 @@ import { ESTIMATE_HOME_PAGE_URL } from '@/constants/url';
 
 export const useEstimate = () => {
   return useMutation({
-    mutationFn: async ({ pcId }: { pcId: string }) => {
+    mutationFn: async ({ pcIdentifier }: { pcIdentifier: string }) => {
       const endpoint = new URL(`/pc`, ESTIMATE_HOME_PAGE_URL);
-      endpoint.searchParams.set('pcId', pcId);
+      endpoint.searchParams.set('pcIdentifier', pcIdentifier);
       await shell.open(endpoint.href);
       return 'success' as const;
     },

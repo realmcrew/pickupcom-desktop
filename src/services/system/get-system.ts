@@ -13,8 +13,8 @@ import { getPcIdFromStore } from './get-pc-id';
  * 현재 컴퓨터의 정보를 가져옵니다.
  * Rust 코드에서 컴퓨터 정보를 가져오는 함수를 호출합니다.
  */
-export async function getSystemInfo(): Promise<{ pc: Computer; pcId: string }> {
-  const pcId = await getPcIdFromStore();
+export async function getSystemInfo(): Promise<{ pc: Computer; pcIdentifier: string }> {
+  const pcIdentifier = await getPcIdFromStore();
   const response = await invokeSystemCommand<ISystemInfo>('get_system_info').catch((e) => {
     // @TODO: Error handling
     console.error(e);
@@ -23,7 +23,7 @@ export async function getSystemInfo(): Promise<{ pc: Computer; pcId: string }> {
   console.log('[HW INFO]', response);
 
   const pc = transform(response);
-  return { pc, pcId };
+  return { pc, pcIdentifier };
 }
 
 function transform(dto: ISystemInfo): Computer {
