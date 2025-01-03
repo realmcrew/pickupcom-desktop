@@ -49,14 +49,16 @@ jobs:
           node-version: 'lts/*'
           cache: 'pnpm' # Set this to npm, yarn or pnpm.
 
-      - name: Build the app
-        uses: tauri-apps/tauri-action@v0
+      - name: Build Tauri app
+        run: npm run tauri build
 
-        env:
-          GITHUB_TOKEN: ${{ secrets.RELEASE_ACTIONS_TOKEN }}
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
         with:
-          tagName: __VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version
-          releaseName: '__VERSION__'
-          releaseBody: ${{ github.event.head_commit.message }} # Commit message
-          releaseDraft: true
-          prerelease: false
+          aws-access-key-id: ${{ secrets.AWS_S3_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_S3_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Upload artifact to S3
+        run: |
+          aws s3 sync ./src-tauri/target/release/bundle s3://pickupcom/release
