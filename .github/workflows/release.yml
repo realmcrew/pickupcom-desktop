@@ -61,4 +61,13 @@ jobs:
 
       - name: Upload artifact to S3
         run: |
-          aws s3 sync ./src-tauri/target/release/bundle s3://pickupcom/release
+          aws s3 sync ./src-tauri/target/release/bundle s3://pickupcom/app/dist/windows
+
+      - name: Rename output file
+        run: |
+          mv ./src-tauri/target/release/bundle/msi/*.msi ./src-tauri/target/release/bundle/pickupcom-installer.msi
+          mv ./src-tauri/target/release/bundle/nsis/*.exe ./src-tauri/target/release/bundle/pickupcom-installer.exe
+
+      - name: Upload release files to S3
+        run: |
+          aws s3 sync ./src-tauri/target/release/bundle s3://pickupcom/app/release/windows
