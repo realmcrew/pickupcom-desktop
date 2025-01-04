@@ -23,7 +23,8 @@ export function transformGpus(dto: ISystemInfo): Gpu[] {
   }
 
   if (dto.os_type === 'Windows') {
-    return dto.system.gpu.map((gpu) => ({
+    const externalGpus = dto.system.gpu.filter((gpu) => checkBuiltInVgaType(gpu.AdapterDacType) === 'external');
+    return externalGpus.map((gpu) => ({
       type: 'GPU',
       hwKey: buildWindowsGpuHwKey(gpu),
       displayName: buildWindowsGpuHwKey(gpu),
@@ -46,7 +47,7 @@ export function transformGpus(dto: ISystemInfo): Gpu[] {
  * "AdapterDacType": "Internal DAC({number}MHz)" -> 내장그래픽
  * "AdapterDacType": "Integrated RAMDAC" -> 외장그래픽
  */
-function checkBuiltInVgaType(AdapterDacType: string | null): 'built-in' | 'external' {
+export function checkBuiltInVgaType(AdapterDacType: string | null): 'built-in' | 'external' {
   if (!AdapterDacType) {
     throw new Error('AdapterDacType is null');
   }
