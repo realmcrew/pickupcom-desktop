@@ -47,6 +47,7 @@ function transform(dto: ISystemInfo): Computer {
         throw new Error(`Unknown platform type: ${platform}`);
       }
 
+      // @TODO: 추후 플랫폼 타입 추가 시 수정 필요
       const isDesktop = platform === WINDOWS_PLATFORM_TYPE.DESKTOP;
 
       return {
