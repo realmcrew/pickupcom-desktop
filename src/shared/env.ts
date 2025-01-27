@@ -19,6 +19,10 @@ export const env = createEnv({
         invalid_type_error: 'VITE_ESTIMATE_HOME_PAGE_URL must be a string',
       })
       .url('VITE_ESTIMATE_HOME_PAGE_URL must be a valid URL'),
+    VITE_SENTRY_AUTH_TOKEN: z.string({
+      required_error: 'VITE_SENTRY_AUTH_TOKEN is required',
+      invalid_type_error: 'VITE_SENTRY_AUTH_TOKEN must be a string',
+    }),
   },
 
   /**
