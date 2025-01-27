@@ -3,6 +3,7 @@ import { Computer } from '@/types/api/dto/computer';
 import { useMutation } from '@tanstack/react-query';
 import { ComputerSchema } from '@/lib/zod/schemas/hardware';
 import { ESTIMATE_HOME_PAGE_URL } from '@/constants/url';
+import { captureException } from '@/lib/error-monitoring/sentry';
 
 async function savePcSpec({ pcIdentifier, pc }: { pcIdentifier: string; pc: Computer }) {
   const endpoint = new URL(`/api/pc/${pcIdentifier}`, ESTIMATE_HOME_PAGE_URL);
@@ -14,6 +15,8 @@ async function savePcSpec({ pcIdentifier, pc }: { pcIdentifier: string; pc: Comp
   });
 
   if (!response.ok) {
+    const error = await response.json();
+    captureException(error);
     throw new Error('Failed to save PC spec');
   }
 
@@ -30,6 +33,7 @@ export const useSavePcSpec = () => {
     },
     onError: (error) => {
       console.error('[PC ERROR]', error);
+      captureException(error);
     },
   });
 };

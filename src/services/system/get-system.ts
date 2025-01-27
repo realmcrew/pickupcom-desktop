@@ -80,6 +80,6 @@ function transform(dto: ISystemInfo): Computer {
   } catch (e) {
     captureException(e);
     console.error(e);
-    throw new Error('Failed to get system info');
+    throw new Error('Failed to format system info');
   }
 }
