@@ -1,8 +1,11 @@
 import Navbar from '@/components/common/navbar';
+import { initSentry } from '@/lib/sentry/sentry';
 import { IS_PRODUCTION } from '@/shared/helpers/is-production';
 import { createRootRoute, Outlet } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/router-devtools';
 import { NuqsAdapter } from 'nuqs/adapters/react';
+
+initSentry();
 
 export const Route = createRootRoute({
   component: () => (
