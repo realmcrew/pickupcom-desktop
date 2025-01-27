@@ -12,7 +12,7 @@ export const useSystemInfo = () => {
   const pcSpecMutation = useSavePcSpec();
 
   useEffect(() => {
-    if (data) {
+    if (data.pc) {
       pcSpecMutation.mutate({ pcIdentifier: data.pcIdentifier, pc: data.pc });
     }
   }, [data]);
