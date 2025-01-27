@@ -8,6 +8,7 @@ import { transformCpus } from '@/services/system/format/cpu-format';
 import { transformMainboards } from '@/services/system/format/mb-format';
 import { WINDOWS_PLATFORM_TYPE } from '@/types/system/dto/windows/platform';
 import { getPcIdFromStore } from './get-pc-id';
+import { captureException } from '@/lib/error-monitoring/sentry';
 
 /**
  * 현재 컴퓨터의 정보를 가져옵니다.
@@ -18,6 +19,7 @@ export async function getSystemInfo(): Promise<{ pc: Computer; pcIdentifier: str
   const response = await invokeSystemCommand<ISystemInfo>('get_system_info').catch((e) => {
     // @TODO: Error handling
     console.error(e);
+    captureException(e);
     throw e;
   });
   console.log('[HW INFO]', response);
@@ -27,51 +29,57 @@ export async function getSystemInfo(): Promise<{ pc: Computer; pcIdentifier: str
 }
 
 function transform(dto: ISystemInfo): Computer {
-  switch (dto.os_type) {
-    case 'Darwin':
-      return {
-        os: { name: dto.system.os.name, platform: 'laptop' },
-        cpus: transformCpus(dto),
-        gpus: transformGpus(dto),
-        mainboards: transformMainboards(dto),
-        rams: transformRams(dto),
-        disks: transformDisks(dto),
-      };
+  try {
+    switch (dto.os_type) {
+      case 'Darwin':
+        return {
+          os: { name: dto.system.os.name, platform: 'laptop' },
+          cpus: transformCpus(dto),
+          gpus: transformGpus(dto),
+          mainboards: transformMainboards(dto),
+          rams: transformRams(dto),
+          disks: transformDisks(dto),
+        };
 
-    case 'Windows':
-      const platform = dto.system.platform[0].ChassisTypes[0];
-      // Desktop or laptop
-      const isKnownPlatform = (Object.values(WINDOWS_PLATFORM_TYPE) as number[]).includes(platform);
+      case 'Windows':
+        const platform = dto.system.platform[0].ChassisTypes[0];
+        // Desktop or laptop
+        const isKnownPlatform = (Object.values(WINDOWS_PLATFORM_TYPE) as number[]).includes(platform);
 
-      if (!isKnownPlatform) {
-        throw new Error(`Unknown platform type: ${platform}`);
-      }
+        if (!isKnownPlatform) {
+          throw new Error(`Unknown platform type: ${platform}`);
+        }
 
-      // @TODO: 추후 플랫폼 타입 추가 시 수정 필요
-      const isDesktop = platform === WINDOWS_PLATFORM_TYPE.DESKTOP;
+        // @TODO: 추후 플랫폼 타입 추가 시 수정 필요
+        const isDesktop = platform === WINDOWS_PLATFORM_TYPE.DESKTOP;
 
-      return {
-        os: {
-          name: dto.system.os[0].Name,
-          platform: isDesktop ? 'desktop' : 'laptop',
-        },
-        cpus: transformCpus(dto),
-        mainboards: transformMainboards(dto),
-        gpus: transformGpus(dto),
-        rams: transformRams(dto),
-        disks: transformDisks(dto),
-      };
+        return {
+          os: {
+            name: dto.system.os[0].Name,
+            platform: isDesktop ? 'desktop' : 'laptop',
+          },
+          cpus: transformCpus(dto),
+          mainboards: transformMainboards(dto),
+          gpus: transformGpus(dto),
+          rams: transformRams(dto),
+          disks: transformDisks(dto),
+        };
 
-    // case 'Linux':
-    //Todo: Implement Linux
-    default:
-      return {
-        os: { name: 'UNKNOWN', platform: 'desktop' },
-        cpus: transformCpus(dto),
-        mainboards: transformMainboards(dto),
-        gpus: transformGpus(dto),
-        rams: transformRams(dto),
-        disks: transformDisks(dto),
-      };
+      // case 'Linux':
+      //Todo: Implement Linux
+      default:
+        return {
+          os: { name: 'UNKNOWN', platform: 'desktop' },
+          cpus: transformCpus(dto),
+          mainboards: transformMainboards(dto),
+          gpus: transformGpus(dto),
+          rams: transformRams(dto),
+          disks: transformDisks(dto),
+        };
+    }
+  } catch (e) {
+    captureException(e);
+    console.error(e);
+    throw new Error('Failed to get system info');
   }
 }

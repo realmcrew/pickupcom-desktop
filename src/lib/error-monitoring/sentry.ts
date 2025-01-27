@@ -6,3 +6,11 @@ export function initSentry() {
     integrations: [],
   });
 }
+
+export function captureException(error: unknown) {
+  Sentry.captureException(error);
+}
+
+export function captureMessage(message: string) {
+  Sentry.captureMessage(message);
+}

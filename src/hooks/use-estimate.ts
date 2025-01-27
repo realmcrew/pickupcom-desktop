@@ -1,6 +1,7 @@
 import * as shell from '@tauri-apps/plugin-shell';
 import { useMutation } from '@tanstack/react-query';
 import { ESTIMATE_HOME_PAGE_URL } from '@/constants/url';
+import { captureException } from '@/lib/error-monitoring/sentry';
 
 export const useEstimate = () => {
   return useMutation({
@@ -17,6 +18,7 @@ export const useEstimate = () => {
     },
     onError: (error) => {
       console.error(`[UseEstimate Error]`, error);
+      captureException(error);
       throw error;
     },
   });
