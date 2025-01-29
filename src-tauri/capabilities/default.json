@@ -8,9 +8,10 @@
     "shell:allow-open",
     "shell:default",
     "store:default",
+    "http:allow-fetch",
     {
       "identifier": "http:default",
-      "allow": ["http://localhost:3000/**", "https://pickupcom.com/**", "https://*.pickupcom.com/**"]
+      "allow": ["http://**", "https://**", "https://pickupcom.com/**", "https://*.pickupcom.com/**"]
     }
   ]
 }
