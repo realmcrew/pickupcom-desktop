@@ -10,12 +10,7 @@
     "store:default",
     {
       "identifier": "http:default",
-      "allow": [
-        "http://localhost:3000",
-        "https://pickupcom.com",
-        "https://*.pickupcom.com",
-        "https://834e-118-36-207-199.ngrok-free.app"
-      ]
+      "allow": ["http://localhost:3000/**", "https://pickupcom.com/**", "https://*.pickupcom.com/**"]
     }
   ]
 }
