@@ -11,7 +11,14 @@
     "http:allow-fetch",
     {
       "identifier": "http:default",
-      "allow": ["http://**", "https://**", "https://pickupcom.com/**", "https://*.pickupcom.com/**"]
+      "allow": [
+        {
+          "url": "https://**"
+        },
+        {
+          "url": "http://**"
+        }
+      ]
     }
   ]
 }
