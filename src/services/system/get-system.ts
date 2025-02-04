@@ -47,6 +47,7 @@ function transform(dto: ISystemInfo): Computer {
         const isKnownPlatform = (Object.values(WINDOWS_PLATFORM_TYPE) as number[]).includes(platform);
 
         if (!isKnownPlatform) {
+          captureException(new Error(`Unknown platform type: ${platform}`));
           throw new Error(`Unknown platform type: ${platform}`);
         }
 
