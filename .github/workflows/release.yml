@@ -50,7 +50,7 @@ jobs:
           cache: 'pnpm' # Set this to npm, yarn or pnpm.
 
       - name: Build Tauri app
-        run: npm run tauri build
+        run: npm run tauri:build
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4

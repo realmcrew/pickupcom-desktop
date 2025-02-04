@@ -9,7 +9,7 @@
     "preview": "vite preview",
     "tauri": "tauri",
     "tauri:dev": "tauri dev",
-    "tauri:build": "tauri build",
+    "tauri:build": "tauri build --verbose",
     "sdk-version-check": "ncu @realmcrew/pickupcom -u --install always"
   },
   "dependencies": {
