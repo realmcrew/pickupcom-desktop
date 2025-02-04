@@ -22,7 +22,7 @@
     "licenseFile": "./license.txt",
     "windows": {
       "nsis": {
-        "languages": ["Korean"]
+        "languages": ["Korean", "English"]
       }
     }
   }
