@@ -1,4 +1,4 @@
-import { captureException } from '@/lib/error-monitoring/sentry';
+import { captureMessage } from '@/lib/error-monitoring/sentry';
 import { formatCpuBrandOrThrow } from '@/types/api/dto/cpu';
 import { extractAMDChipset, extractIntelChipset, formatMotherboardVendor, Mainboard } from '@/types/api/dto/mb';
 import { ISystemInfo } from '@/types/system/dto/system';
@@ -16,7 +16,7 @@ export function transformMainboards(dto: ISystemInfo): Mainboard[] {
       // Extract unknown chipset
       if (!chipset) {
         console.error(`Can not extract chipset. [${mb.Product}]`);
-        captureException(new Error(`Can not extract chipset. [${mb.Product}]`));
+        captureMessage(`Can not extract chipset. [${mb.Product}]`);
         return null;
       }
 
