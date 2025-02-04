@@ -8,11 +8,13 @@ export function transformMainboards(dto: ISystemInfo): Mainboard[] {
   }
 
   if (dto.os_type === 'Windows') {
-    return dto.system.motherboard.map((mb) => {
+    const mainboards = dto.system.motherboard.map((mb) => {
       const cpuVendor = formatCpuBrandOrThrow(dto.system.cpu[0].Manufacturer);
       const chipset = cpuVendor === 'INTEL' ? extractIntelChipset(mb.Product) : extractAMDChipset(mb.Product);
       if (!chipset) {
-        throw new Error(`Can not extract chipset. [${mb.Product}]`);
+        console.error(`Can not extract chipset. [${mb.Product}]`);
+        // throw new Error(`Can not extract chipset. [${mb.Product}]`); // @TODO: 추후 예외 처리 필요
+        return null;
       }
       return {
         type: 'MB',
@@ -24,6 +26,8 @@ export function transformMainboards(dto: ISystemInfo): Mainboard[] {
         cpuVendor,
       };
     });
+
+    return mainboards.filter((mb) => !!mb) as Mainboard[];
   }
 
   // Unknown OS
