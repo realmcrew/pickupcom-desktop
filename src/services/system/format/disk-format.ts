@@ -9,6 +9,7 @@ import { NonNullableField } from '@/types/non-nullable-infer';
 
 export function transformDisks(dto: ISystemInfo): Disk[] {
   if (dto.os_type === 'Windows') {
+    // Filter USB case.
     const disks = dto.system.disks.filter((disk) => isSsd(disk.DiskKind) || isHdd(disk.DiskKind)) as NonNullableField<
       IWindowsDisk,
       'DiskKind'
@@ -28,6 +29,7 @@ export function transformDisks(dto: ISystemInfo): Disk[] {
   }
 
   if (dto.os_type === 'Darwin') {
+    // Filter USB case.
     const disks = dto.system.disks.filter((disk) => isSsd(disk.kind) || isHdd(disk.kind));
     return disks.map((disk) => {
       const diskKind = disk.kind.toUpperCase();
