@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { PcRoomNamesResponseSchema } from '@/lib/zod/schemas/pc-room';
 
 async function getPcRoomNames(): Promise<string[]> {
-  const endpoint = new URL(`/pc-rooms`, ESTIMATE_HOME_PAGE_URL);
+  const endpoint = new URL(`/api/pc-rooms`, ESTIMATE_HOME_PAGE_URL);
 
   const response = await fetch(endpoint, {
     method: 'GET',
