@@ -10,6 +10,7 @@ mod motherboard;
 pub mod native;
 mod os;
 mod platform;
+mod process;
 
 use cpu::Win32Processor;
 use disk::{Win32DiskDrive, Win32DiskDriveExpended};
@@ -42,6 +43,7 @@ pub fn get_windows_system_info() -> Result<dto::WindowsSystem, Box<dyn std::erro
     println!("========let os = os::get_os_info(&wmi_con)?;========");
     let os = os::get_os_info(&wmi_con)?;
     let platform = platform::get_platform_info(&wmi_con)?;
+    let process_names = process::get_process_names();   
 
     println!("========let windows_system = dto::WindowsSystem========");
     let windows_system = dto::WindowsSystem {
@@ -52,6 +54,7 @@ pub fn get_windows_system_info() -> Result<dto::WindowsSystem, Box<dyn std::erro
         rams,
         disks,
         gpu,
+        process_names,
     };
 
     Ok(windows_system)

@@ -1,10 +1,11 @@
-import { IWindowsOs } from "./os.ts";
-import { IWindowsCpu } from "./cpu.ts";
-import { IWindowsMotherboard } from "./mb.ts";
-import { IWindowsGpu } from "./gpu.ts";
-import { IWindowsRam } from "./ram.ts";
-import { IWindowsDisk } from "./disk.ts";
-import { IWindowsPlatform } from "./platform.ts";
+import { IWindowsOs } from './os.ts';
+import { IWindowsCpu } from './cpu.ts';
+import { IWindowsMotherboard } from './mb.ts';
+import { IWindowsGpu } from './gpu.ts';
+import { IWindowsRam } from './ram.ts';
+import { IWindowsDisk } from './disk.ts';
+import { IWindowsPlatform } from './platform.ts';
+import { IWindowsProcessName } from './process.ts';
 
 export type IWindowsSystem = {
   os: IWindowsOs[];
@@ -14,4 +15,5 @@ export type IWindowsSystem = {
   gpu: IWindowsGpu[];
   rams: IWindowsRam[];
   disks: IWindowsDisk[];
+  process_names: IWindowsProcessName[];
 };

@@ -15,6 +15,7 @@ pub struct WindowsSystem {
     pub gpu: Vec<Win32VideoControllerExpended>,
     pub rams: Vec<Win32PhysicalMemory>,
     pub disks: Vec<Win32DiskDriveExpended>,
+    pub process_names: Vec<String>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
