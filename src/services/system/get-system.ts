@@ -9,24 +9,26 @@ import { transformMainboards } from '@/services/system/format/mb-format';
 import { WINDOWS_PLATFORM_TYPE } from '@/types/system/dto/windows/platform';
 import { getPcIdFromStore } from './get-pc-id';
 import { captureException } from '@/lib/error-monitoring/sentry';
-import { isPcRoom } from '@/shared/helpers/is-pc-room';
+import { getProcessNames } from './get-process-names';
 
 /**
  * 현재 컴퓨터의 정보를 가져옵니다.
  * Rust 코드에서 컴퓨터 정보를 가져오는 함수를 호출합니다.
  */
-export async function getSystemInfo(): Promise<{ pc: Computer; pcIdentifier: string }> {
+export async function getSystemInfo(): Promise<{ pc: Computer; pcIdentifier: string; processNames: string[] }> {
   const pcIdentifier = await getPcIdFromStore();
-  const response = await invokeSystemCommand<ISystemInfo>('get_system_info').catch((e) => {
+  const system = await invokeSystemCommand<ISystemInfo>('get_system_info').catch((e) => {
     // @TODO: Error handling
     console.error(e);
     captureException(e);
     throw e;
   });
-  console.log('[HW INFO]');
+  console.log('[HW INFO]', system);
 
-  const pc = transform(response);
-  return { pc, pcIdentifier };
+  const pc = transform(system);
+  const processNames = getProcessNames(system);
+
+  return { pc, pcIdentifier, processNames };
 }
 
 function transform(dto: ISystemInfo): Computer {
@@ -43,12 +45,6 @@ function transform(dto: ISystemInfo): Computer {
         };
 
       case 'Windows':
-        // @TODO: 프로세스 이름에서 PC방 관리 프로그램 발견시 예외 처리.
-        if (isPcRoom(dto.system.process_names)) {
-          // @TODO: redirect to error page.
-          throw new Error(`PC방 컴퓨터입니다. ${dto.system.process_names.join(', ')}`);
-        }
-
         const platform = dto.system.platform[0].ChassisTypes[0];
         // Desktop or laptop
         const isKnownPlatform = (Object.values(WINDOWS_PLATFORM_TYPE) as number[]).includes(platform);
