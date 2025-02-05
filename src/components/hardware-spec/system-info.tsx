@@ -36,7 +36,6 @@ export default function SystemInfo() {
   }
 
   const pc = systemQuery.data.pc;
-
   return (
     <div className="w-full flex justify-center">
       <div className="space-y-4 max-w-4xl px-4 container mx-auto flex flex-col">

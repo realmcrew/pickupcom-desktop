@@ -28,7 +28,7 @@ function checkPcRoomManagementProcessNames({
   pcRoomManagementProcessNames: string[];
 }): boolean {
   console.log('[PROCESS NAMES]', processNames);
-  return processNames.some((processName) => pcRoomManagementProcessNames.includes(processName));
+  return processNames.some((processName) => processName.includes(pcRoomManagementProcessNames));
 }
 
 export const usePcRoomManagementProcessNames = (processNames: string[]) => {
