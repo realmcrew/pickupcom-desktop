@@ -17,7 +17,7 @@ export default function SystemInfo() {
     toast.success('컴퓨터 정보를 갱신합니다.', { position: 'top-center', duration: 1500, richColors: true });
   };
 
-  if (systemQuery.isFetching) {
+  if (systemQuery.isFetching || validatePcRoomQuery.isFetching) {
     return <LoadingScreen />;
   }
 

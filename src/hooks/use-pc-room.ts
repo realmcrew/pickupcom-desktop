@@ -46,10 +46,5 @@ export const usePcRoomManagementProcessNames = (processNames: string[]) => {
       const pcRoomManagementProcessNames = await getPcRoomManagementProcessNames();
       return checkPcRoomManagementProcessNames({ processNames, pcRoomManagementProcessNames });
     },
-    staleTime: Infinity,
-    refetchInterval: false,
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
   });
 };
