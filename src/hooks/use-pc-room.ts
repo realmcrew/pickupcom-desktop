@@ -6,7 +6,7 @@ async function getPcRoomNames(): Promise<string[]> {
   const endpoint = new URL(`/api/pc-rooms`, ESTIMATE_HOME_PAGE_URL);
 
   const response = await fetch(endpoint, {
-    method: 'GET',
+    method: 'POST',
     headers: { 'Content-Type': 'application/json' },
   });
 
@@ -15,8 +15,9 @@ async function getPcRoomNames(): Promise<string[]> {
   }
 
   const data = await response.json();
+  console.log('[RESPONSE DATA]', data);
 
-  return PcRoomNamesResponseSchema.parse(data);
+  return PcRoomNamesResponseSchema.parse(data).processNames;
 }
 
 function checkPcRoomNames({ processNames, pcRoomNames }: { processNames: string[]; pcRoomNames: string[] }): boolean {
