@@ -1,12 +1,12 @@
 import { ESTIMATE_HOME_PAGE_URL } from '@/constants/url';
 import { useQuery } from '@tanstack/react-query';
-import { PcRoomNamesResponseSchema } from '@/lib/zod/schemas/pc-room';
+import { fetch } from '@tauri-apps/plugin-http';
 
 async function getPcRoomManagementProcessNames(): Promise<string[]> {
   const endpoint = new URL(`/api/pc-rooms`, ESTIMATE_HOME_PAGE_URL);
 
   const response = await fetch(endpoint, {
-    method: 'POST',
+    method: 'GET',
     headers: { 'Content-Type': 'application/json' },
   });
 
@@ -14,10 +14,10 @@ async function getPcRoomManagementProcessNames(): Promise<string[]> {
     throw new Error('Failed to get PC room names');
   }
 
-  const data = await response.json();
-  console.log('[RESPONSE DATA]', data);
+  const processNames = await response.json();
+  console.log('[RESPONSE DATA]', processNames);
 
-  return PcRoomNamesResponseSchema.parse(data).processNames;
+  return processNames;
 }
 
 function checkPcRoomManagementProcessNames({
