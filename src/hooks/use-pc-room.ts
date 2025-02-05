@@ -44,7 +44,9 @@ export const usePcRoomManagementProcessNames = (processNames: string[]) => {
     queryKey: ['pc-room-management-process-names', processNames],
     queryFn: async () => {
       const pcRoomManagementProcessNames = await getPcRoomManagementProcessNames();
-      return checkPcRoomManagementProcessNames({ processNames, pcRoomManagementProcessNames });
+      const isPcRoom = checkPcRoomManagementProcessNames({ processNames, pcRoomManagementProcessNames });
+      console.log('[PC ROOM QUERY]', isPcRoom);
+      return isPcRoom;
     },
   });
 };

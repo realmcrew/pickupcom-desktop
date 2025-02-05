@@ -26,6 +26,7 @@ export default function SystemInfo() {
   }
 
   const isPcRoom = validatePcRoomQuery.data;
+  console.log('[IS PC ROOM]', isPcRoom);
   if (isPcRoom) {
     return (
       <BlockScreen
