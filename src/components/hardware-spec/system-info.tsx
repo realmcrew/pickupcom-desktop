@@ -6,18 +6,16 @@ import RetryScreen from '@/components/common/retry-screen';
 import SystemInfoButtonGroup from './system-info-button-group';
 import DebugPanel from '@/components/hardware-spec/debug-panel';
 import BlockScreen from '@/components/common/block-screen';
-import { usePcRoomManagementProcessNames } from '@/hooks/use-pc-room';
 
 export default function SystemInfo() {
   const systemQuery = useSystemInfo();
-  const validatePcRoomQuery = usePcRoomManagementProcessNames(systemQuery.data.processNames);
 
   const handleSystemRefresh = () => {
     systemQuery.refetch();
     toast.success('컴퓨터 정보를 갱신합니다.', { position: 'top-center', duration: 1500, richColors: true });
   };
 
-  if (systemQuery.isFetching || validatePcRoomQuery.isFetching) {
+  if (systemQuery.isFetching) {
     return <LoadingScreen />;
   }
 
@@ -25,8 +23,7 @@ export default function SystemInfo() {
     return <RetryScreen handleRetry={handleSystemRefresh} />;
   }
 
-  const isPcRoom = validatePcRoomQuery.data;
-  console.log('[IS PC ROOM]', isPcRoom);
+  const { isPcRoom } = systemQuery.data;
   if (isPcRoom) {
     return (
       <BlockScreen

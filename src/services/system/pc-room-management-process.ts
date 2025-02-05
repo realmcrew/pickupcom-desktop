@@ -1,8 +1,7 @@
 import { ESTIMATE_HOME_PAGE_URL } from '@/constants/url';
-import { useSuspenseQuery } from '@tanstack/react-query';
 import { fetch } from '@tauri-apps/plugin-http';
 
-async function getPcRoomManagementProcessNames(): Promise<string[]> {
+export async function getPcRoomManagementProcessNames(): Promise<string[]> {
   const endpoint = new URL(`/api/pc-rooms`, ESTIMATE_HOME_PAGE_URL);
 
   const response = await fetch(endpoint, {
@@ -24,7 +23,7 @@ async function getPcRoomManagementProcessNames(): Promise<string[]> {
  * 현재 실행중인 프로세스 중에서
  * PC방 관리 프로세스가 있는지 확인합니다.
  */
-function checkPcRoomManagementProcessNames({
+export function checkPcRoomManagementProcessNames({
   processNames,
   pcRoomManagementProcessNames,
 }: {
@@ -38,15 +37,3 @@ function checkPcRoomManagementProcessNames({
     ),
   );
 }
-
-export const usePcRoomManagementProcessNames = (processNames: string[]) => {
-  return useSuspenseQuery({
-    queryKey: ['pc-room-management-process-names', processNames],
-    queryFn: async () => {
-      const pcRoomManagementProcessNames = await getPcRoomManagementProcessNames();
-      const isPcRoom = checkPcRoomManagementProcessNames({ processNames, pcRoomManagementProcessNames });
-      console.log('[PC ROOM QUERY]', isPcRoom);
-      return isPcRoom;
-    },
-  });
-};

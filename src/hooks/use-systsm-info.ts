@@ -3,25 +3,38 @@ import { getSystemInfo } from '@/services/system/get-system';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useSavePcSpec } from '@/hooks/use-save-pc-spec';
 import { captureException } from '@/lib/error-monitoring/sentry';
+import {
+  getPcRoomManagementProcessNames,
+  checkPcRoomManagementProcessNames,
+} from '@/services/system/pc-room-management-process';
 
 export const useSystemInfo = () => {
-  const { data, isFetching, refetch, error } = useSuspenseQuery({
+  const pcSpecMutation = useSavePcSpec();
+  const systemQuery = useSuspenseQuery({
     queryKey: ['systemInfo'],
-    queryFn: getSystemInfo,
+    queryFn: async () => {
+      const systemInfo = await getSystemInfo();
+      const pcRoomManagementProcessNames = await getPcRoomManagementProcessNames();
+      const isPcRoom = checkPcRoomManagementProcessNames({
+        processNames: systemInfo.processNames,
+        pcRoomManagementProcessNames,
+      });
+      console.log('[IS PC ROOM]', isPcRoom);
+
+      return { ...systemInfo, isPcRoom };
+    },
   });
 
-  const pcSpecMutation = useSavePcSpec();
-
   useEffect(() => {
-    if (error) {
-      captureException(error);
+    if (systemQuery.error) {
+      captureException(systemQuery.error);
       return;
     }
 
-    if (data.pc) {
-      pcSpecMutation.mutate({ pcIdentifier: data.pcIdentifier, pc: data.pc });
+    if (systemQuery.data?.pc) {
+      pcSpecMutation.mutate({ pcIdentifier: systemQuery.data.pcIdentifier, pc: systemQuery.data.pc });
     }
-  }, [data]);
+  }, [systemQuery.data]);
 
-  return { data, isFetching, refetch };
+  return systemQuery;
 };
