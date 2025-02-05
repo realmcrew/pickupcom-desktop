@@ -20,6 +20,10 @@ async function getPcRoomManagementProcessNames(): Promise<string[]> {
   return processNames;
 }
 
+/**
+ * 현재 실행중인 프로세스 중에서
+ * PC방 관리 프로세스가 있는지 확인합니다.
+ */
 function checkPcRoomManagementProcessNames({
   processNames,
   pcRoomManagementProcessNames,
@@ -28,7 +32,11 @@ function checkPcRoomManagementProcessNames({
   pcRoomManagementProcessNames: string[];
 }): boolean {
   console.log('[PROCESS NAMES]', processNames);
-  return processNames.some((processName) => processName.includes(pcRoomManagementProcessNames));
+  return processNames.some((processName) =>
+    pcRoomManagementProcessNames.some((pcRoomManagementProcessName) =>
+      processName.includes(pcRoomManagementProcessName),
+    ),
+  );
 }
 
 export const usePcRoomManagementProcessNames = (processNames: string[]) => {
