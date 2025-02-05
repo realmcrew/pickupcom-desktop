@@ -3,7 +3,6 @@ import { fetch } from '@tauri-apps/plugin-http';
 
 export async function getPcRoomManagementProcessNames(): Promise<string[]> {
   const endpoint = new URL(`/api/pc-rooms`, ESTIMATE_HOME_PAGE_URL);
-
   const response = await fetch(endpoint, {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
@@ -14,8 +13,6 @@ export async function getPcRoomManagementProcessNames(): Promise<string[]> {
   }
 
   const processNames = await response.json();
-  console.log('[RESPONSE DATA]', processNames);
-
   return processNames;
 }
 
@@ -30,7 +27,6 @@ export function checkPcRoomManagementProcessNames({
   processNames: string[];
   pcRoomManagementProcessNames: string[];
 }): boolean {
-  console.log('[PROCESS NAMES]', processNames);
   return processNames.some((processName) =>
     pcRoomManagementProcessNames.some((pcRoomManagementProcessName) =>
       processName.includes(pcRoomManagementProcessName),

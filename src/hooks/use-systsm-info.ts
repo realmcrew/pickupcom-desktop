@@ -19,7 +19,6 @@ export const useSystemInfo = () => {
         processNames: systemInfo.processNames,
         pcRoomManagementProcessNames,
       });
-      console.log('[IS PC ROOM]', isPcRoom);
 
       return { ...systemInfo, isPcRoom };
     },
