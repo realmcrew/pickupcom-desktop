@@ -12,8 +12,8 @@ dependencies:
     specifier: ^1.1.0
     version: 1.1.0(@types/react@18.3.14)(react@18.3.1)
   '@realmcrew/pickupcom':
-    specifier: ^0.0.42
-    version: 0.0.42(@samchon/openapi@2.3.1)(typescript@5.7.2)
+    specifier: ^0.0.44
+    version: 0.0.44(@samchon/openapi@2.3.1)(typescript@5.7.2)
   '@sentry/react':
     specifier: ^8.51.0
     version: 8.51.0(react@18.3.1)
@@ -1295,8 +1295,8 @@ packages:
     resolution: {integrity: sha512-A9+lCBZoaMJlVKcRBz2YByCG+Cp2t6nAnMnNba+XiWxnj6r4JUFqfsgwocMBZU9LPtdxC6wB56ySYpc7LQIoJg==}
     dev: false
 
-  /@realmcrew/pickupcom@0.0.42(@samchon/openapi@2.3.1)(typescript@5.7.2):
-    resolution: {integrity: sha512-RuTA8HuRWn0iGtuubTK6YWFdiw0Ga8VOc+WOYe0l8fCMc6oVW9+pkgC7sD761pZBTsFLmDcSl2qbPwx2rZ930Q==, tarball: https://npm.pkg.github.com/download/@realmcrew/pickupcom/0.0.42/cb74cf233a186d235988e9dd8a349b471a710c4e}
+  /@realmcrew/pickupcom@0.0.44(@samchon/openapi@2.3.1)(typescript@5.7.2):
+    resolution: {integrity: sha512-lZ1HL2n7qF6goGA0PfxJN87cwE6Gx+rBt2w7BElY3cfUvovnq+WuX3h89mg36BjjhY3D4bgEkJ7qIC6FQ4cttA==, tarball: https://npm.pkg.github.com/download/@realmcrew/pickupcom/0.0.44/a3b2bf1cce8b7432468836e714ca716bb0d4d54b}
     dependencies:
       '@nestia/fetcher': 4.5.1(typescript@5.7.2)
       typia: 7.5.1(@samchon/openapi@2.3.1)(typescript@5.7.2)

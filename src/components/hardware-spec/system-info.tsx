@@ -6,7 +6,7 @@ import RetryScreen from '@/components/common/retry-screen';
 import SystemInfoButtonGroup from './system-info-button-group';
 import DebugPanel from '@/components/hardware-spec/debug-panel';
 import BlockScreen from '@/components/common/block-screen';
-import { usePcRoomNames } from '@/hooks/use-pc-room';
+import { usePcRoomManagementProcessNames } from '@/hooks/use-pc-room';
 
 export default function SystemInfo() {
   const systemQuery = useSystemInfo();
@@ -24,7 +24,7 @@ export default function SystemInfo() {
     return <RetryScreen handleRetry={handleSystemRefresh} />;
   }
 
-  const validatePcRoomQuery = usePcRoomNames(systemQuery.data.processNames);
+  const validatePcRoomQuery = usePcRoomManagementProcessNames(systemQuery.data.processNames);
   const isPcRoom = validatePcRoomQuery.data;
 
   if (isPcRoom) {

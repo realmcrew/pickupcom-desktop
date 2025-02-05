@@ -2,7 +2,7 @@ import { ESTIMATE_HOME_PAGE_URL } from '@/constants/url';
 import { useQuery } from '@tanstack/react-query';
 import { PcRoomNamesResponseSchema } from '@/lib/zod/schemas/pc-room';
 
-async function getPcRoomNames(): Promise<string[]> {
+async function getPcRoomManagementProcessNames(): Promise<string[]> {
   const endpoint = new URL(`/api/pc-rooms`, ESTIMATE_HOME_PAGE_URL);
 
   const response = await fetch(endpoint, {
@@ -20,16 +20,23 @@ async function getPcRoomNames(): Promise<string[]> {
   return PcRoomNamesResponseSchema.parse(data).processNames;
 }
 
-function checkPcRoomNames({ processNames, pcRoomNames }: { processNames: string[]; pcRoomNames: string[] }): boolean {
-  return processNames.some((processName) => pcRoomNames.includes(processName));
+function checkPcRoomManagementProcessNames({
+  processNames,
+  pcRoomManagementProcessNames,
+}: {
+  processNames: string[];
+  pcRoomManagementProcessNames: string[];
+}): boolean {
+  console.log('[PROCESS NAMES]', processNames);
+  return processNames.some((processName) => pcRoomManagementProcessNames.includes(processName));
 }
 
-export const usePcRoomNames = (processNames: string[]) => {
+export const usePcRoomManagementProcessNames = (processNames: string[]) => {
   return useQuery({
-    queryKey: ['pc-room-names', processNames],
+    queryKey: ['pc-room-management-process-names', processNames],
     queryFn: async () => {
-      const pcRoomNames = await getPcRoomNames();
-      return checkPcRoomNames({ processNames, pcRoomNames });
+      const pcRoomManagementProcessNames = await getPcRoomManagementProcessNames();
+      return checkPcRoomManagementProcessNames({ processNames, pcRoomManagementProcessNames });
     },
     staleTime: Infinity,
     refetchInterval: false,
