@@ -10,6 +10,7 @@ import { usePcRoomManagementProcessNames } from '@/hooks/use-pc-room';
 
 export default function SystemInfo() {
   const systemQuery = useSystemInfo();
+  const validatePcRoomQuery = usePcRoomManagementProcessNames(systemQuery.data.processNames);
 
   const handleSystemRefresh = () => {
     systemQuery.refetch();
@@ -24,9 +25,7 @@ export default function SystemInfo() {
     return <RetryScreen handleRetry={handleSystemRefresh} />;
   }
 
-  const validatePcRoomQuery = usePcRoomManagementProcessNames(systemQuery.data.processNames);
   const isPcRoom = validatePcRoomQuery.data;
-
   if (isPcRoom) {
     return (
       <BlockScreen

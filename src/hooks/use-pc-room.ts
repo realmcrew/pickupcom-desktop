@@ -1,5 +1,5 @@
 import { ESTIMATE_HOME_PAGE_URL } from '@/constants/url';
-import { useQuery } from '@tanstack/react-query';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { fetch } from '@tauri-apps/plugin-http';
 
 async function getPcRoomManagementProcessNames(): Promise<string[]> {
@@ -32,7 +32,7 @@ function checkPcRoomManagementProcessNames({
 }
 
 export const usePcRoomManagementProcessNames = (processNames: string[]) => {
-  return useQuery({
+  return useSuspenseQuery({
     queryKey: ['pc-room-management-process-names', processNames],
     queryFn: async () => {
       const pcRoomManagementProcessNames = await getPcRoomManagementProcessNames();
