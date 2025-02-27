@@ -1,5 +1,5 @@
+use log::trace;
 use serde::{Deserialize, Serialize};
-use sysinfo;
 use wmi::{WMIConnection, WMIDateTime};
 
 use crate::system::windows::native::win32_disk;
@@ -42,8 +42,9 @@ pub struct Win32DiskDriveExpended {
 pub fn get_disks_info(
     wmi_con: &WMIConnection,
 ) -> Result<Vec<Win32DiskDriveExpended>, Box<dyn std::error::Error>> {
-    let mut base_disks: Vec<Win32DiskDrive> = wmi_con.query()?;
+    trace!("get_disks_info");
 
+    let mut base_disks: Vec<Win32DiskDrive> = wmi_con.query()?;
     let mut disks = base_disks
         .iter()
         .map(|disk| {

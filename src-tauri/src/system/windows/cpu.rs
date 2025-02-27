@@ -1,3 +1,4 @@
+use log::trace;
 use serde::{Deserialize, Serialize};
 use wmi::{WMIConnection, WMIDateTime};
 
@@ -25,6 +26,8 @@ pub struct Win32Processor {
 pub fn get_cpu_info(
     wmi_con: &WMIConnection,
 ) -> Result<Vec<Win32Processor>, Box<dyn std::error::Error>> {
+    trace!("get_cpu_info");
+    
     let processors: Vec<Win32Processor> = wmi_con.query()?;
     for processor in &processors {
         let processor_detail = format!("{:#?}\n", processor);

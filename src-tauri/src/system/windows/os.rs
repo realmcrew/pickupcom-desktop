@@ -1,3 +1,4 @@
+use log::trace;
 use serde::{Deserialize, Serialize};
 use wmi::{WMIConnection, WMIDateTime};
 
@@ -71,10 +72,12 @@ pub struct Win32OperatingSystem {
 pub fn get_os_info(
     wmi_con: &WMIConnection,
 ) -> Result<Vec<Win32OperatingSystem>, Box<dyn std::error::Error>> {
+    trace!("get_os_info");
+
     let operatingSystems: Vec<Win32OperatingSystem> = wmi_con.query()?;
     for os in &operatingSystems {
         let os_detail = format!("{:#?}\n", os);
-        println!("{}", os_detail);
+        trace!("{}", os_detail);
     }
 
     Ok(operatingSystems)

@@ -1,3 +1,4 @@
+use log::trace;
 use serde::{Deserialize, Serialize};
 use wmi::{WMIConnection, WMIDateTime};
 
@@ -11,10 +12,12 @@ pub struct Win32SystemEnclosure {
 pub fn get_platform_info(
     wmi_con: &WMIConnection,
 ) -> Result<Vec<Win32SystemEnclosure>, Box<dyn std::error::Error>> {
+    trace!("get_platform_info");
+
     let platforms: Vec<Win32SystemEnclosure> = wmi_con.query()?;
     for platform in &platforms {
         let platform_detail = format!("{:#?}\n", platform);
-        println!("{}", platform_detail);
+        trace!("{}", platform_detail);
     }
 
     Ok(platforms)

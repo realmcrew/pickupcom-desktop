@@ -1,3 +1,4 @@
+use log::trace;
 use serde::{Deserialize, Serialize};
 use wmi::{WMIConnection, WMIDateTime};
 
@@ -40,10 +41,12 @@ pub struct Win32BaseBoard {
 pub fn get_motherboard_info(
     wmi_con: &WMIConnection,
 ) -> Result<Vec<Win32BaseBoard>, Box<dyn std::error::Error>> {
+    trace!("get_motherboard_info");
+
     let boards: Vec<Win32BaseBoard> = wmi_con.query()?;
     for board in &boards {
         let board_detail = format!("{:#?}\n", board);
-        println!("{}", board_detail);
+        trace!("{}", board_detail);
     }
 
     Ok(boards)

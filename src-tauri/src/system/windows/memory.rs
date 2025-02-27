@@ -1,3 +1,4 @@
+use log::trace;
 use serde::{Deserialize, Serialize};
 use wmi::{WMIConnection, WMIDateTime};
 
@@ -32,10 +33,12 @@ pub struct Win32PhysicalMemory {
 pub fn get_rams_info(
     wmi_con: &WMIConnection,
 ) -> Result<Vec<Win32PhysicalMemory>, Box<dyn std::error::Error>> {
+    trace!("get_rams_info");
+    
     let rams: Vec<Win32PhysicalMemory> = wmi_con.query()?;
     for ram in &rams {
         let ram_detail = format!("{:#?}\n", ram);
-        println!("{}", ram_detail);
+        trace!("{}", ram_detail);
     }
 
     Ok(rams)

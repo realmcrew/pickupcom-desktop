@@ -1,3 +1,4 @@
+use log::{trace, error};
 use serde::{Deserialize, Serialize};
 use std::process::Command;
 use wmi::{WMIConnection, WMIDateTime};
@@ -32,15 +33,17 @@ pub struct Win32VideoControllerExpended {
 pub fn get_gpu_info(
     wmi_con: &WMIConnection,
 ) -> Result<Vec<Win32VideoControllerExpended>, Box<dyn std::error::Error>> {
+    trace!("get_gpu_info");
+
     let video_controllers: Vec<Win32VideoController> = wmi_con.query()?;
     for video_controller in &video_controllers {
         let video_controller_detail = format!("{:#?}\n", video_controller);
-        println!("{}", video_controller_detail);
+        trace!("{}", video_controller_detail);
     }
 
     let gpu_vram_infos = get_gpu_vram_from_powershell()?;
     for (gpu_name, vram) in &gpu_vram_infos {
-        println!("GPU: {}, VRAM: {} MB", gpu_name, vram);
+        trace!("GPU: {}, VRAM: {} MB", gpu_name, vram);
     }
 
     // video_controllers와 gpu_vram_infos를 결합하고 Option 타입을 올바르게 처리
@@ -98,7 +101,7 @@ pub fn get_gpu_vram_from_powershell() -> Result<Vec<(String, u64)>, Box<dyn std:
     let stdout = String::from_utf8(output.stdout)?;
 
     // 디버깅을 위한 출력
-    println!("PowerShell Output: {}", stdout);
+    trace!("PowerShell Output: {}", stdout);
 
     // 빈 배열 반환 조건 처리
     if stdout.trim().is_empty() || stdout.trim() == "[]" {
@@ -109,7 +112,7 @@ pub fn get_gpu_vram_from_powershell() -> Result<Vec<(String, u64)>, Box<dyn std:
     let gpu_info: Vec<serde_json::Value> = match serde_json::from_str(&stdout.trim()) {
         Ok(info) => info,
         Err(e) => {
-            println!("JSON parsing error: {}. Raw output: {}", e, stdout);
+            error!("JSON parsing error: {}. Raw output: {}", e, stdout);
             return Ok(Vec::new());
         }
     };
